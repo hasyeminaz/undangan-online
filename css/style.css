@@ -1,317 +1,1035 @@
+/* =========================================================
+   UNDANGAN ONLINE
+   STYLE.CSS
+   VERSION 2
+========================================================= */
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
+
   margin: 0;
+
   padding: 0;
+
   box-sizing: border-box;
+
 }
+
 
 html {
+
   scroll-behavior: smooth;
+
 }
+
 
 body {
-  font-family: Georgia, 'Times New Roman', serif;
-  background: #f7f3ef;
-  color: #333;
+
+  font-family:
+    Georgia,
+    'Times New Roman',
+    serif;
+
+  background:
+    #f7f3ef;
+
+  color:
+    #333;
+
+  overflow-x:
+    hidden;
+
 }
 
 
-/* =========================
+button {
+
+  font-family:
+    inherit;
+
+}
+
+
+/* =========================================================
    UTILITY
-========================= */
+========================================================= */
 
 .hidden {
-  display: none !important;
+
+  display:
+    none !important;
+
 }
 
 
-/* =========================
+/* =========================================================
    LOADING
-========================= */
+========================================================= */
 
 .loading-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position:
+    fixed;
 
-  background: #f7f3ef;
+  inset:
+    0;
+
+  z-index:
+    9999;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  background:
+    #f7f3ef;
+
 }
+
 
 .loading-content {
-  text-align: center;
+
+  text-align:
+    center;
+
 }
+
 
 .loading-content p {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #777;
+
+  margin-top:
+    15px;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:
+    13px;
+
+  color:
+    #777;
+
 }
+
 
 .loader {
-  width: 40px;
-  height: 40px;
 
-  margin: auto;
+  width:
+    40px;
 
-  border: 3px solid #ddd;
-  border-top-color: #777;
+  height:
+    40px;
 
-  border-radius: 50%;
+  margin:
+    auto;
 
-  animation: spin 1s linear infinite;
+  border:
+    3px solid #ddd;
+
+  border-top-color:
+    #777;
+
+  border-radius:
+    50%;
+
+  animation:
+    spin 1s linear infinite;
+
 }
+
 
 @keyframes spin {
 
   to {
-    transform: rotate(360deg);
+
+    transform:
+      rotate(360deg);
+
   }
 
 }
 
 
-/* =========================
+/* =========================================================
    HERO
-========================= */
+========================================================= */
 
 .hero {
-  position: relative;
 
-  min-height: 100vh;
+  position:
+    relative;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height:
+    100vh;
 
-  text-align: center;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  text-align:
+    center;
 
   background:
+
     linear-gradient(
       rgba(0, 0, 0, 0.45),
       rgba(0, 0, 0, 0.45)
     ),
-    url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80")
-    center / cover no-repeat;
 
-  color: white;
+    url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80")
+
+    center / cover
+    no-repeat;
+
+  color:
+    white;
+
 }
+
 
 .overlay {
-  position: absolute;
-  inset: 0;
 
-  background: rgba(0, 0, 0, 0.15);
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  background:
+    rgba(0, 0, 0, 0.12);
+
 }
+
 
 .hero-content {
-  position: relative;
-  z-index: 2;
 
-  padding: 30px;
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    100%;
+
+  max-width:
+    1200px;
+
+  padding:
+    30px;
+
 }
+
 
 .small-title {
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  letter-spacing: 5px;
 
-  margin-bottom: 25px;
+  font-family:
+    Arial,
+    sans-serif;
 
-  opacity: 0.9;
+  font-size:
+    12px;
+
+  letter-spacing:
+    5px;
+
+  margin-bottom:
+    25px;
+
+  opacity:
+    0.9;
+
 }
+
 
 .hero h1 {
-  font-size: clamp(42px, 8vw, 85px);
-  font-weight: normal;
 
-  margin-bottom: 20px;
+  font-size:
+    clamp(42px, 7vw, 82px);
+
+  line-height:
+    1.05;
+
+  font-weight:
+    normal;
+
+  margin-bottom:
+    22px;
+
 }
+
 
 .date {
-  font-family: Arial, sans-serif;
-  font-size: 15px;
 
-  margin-bottom: 35px;
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:
+    15px;
+
+  margin-bottom:
+    35px;
+
 }
 
 
-/* =========================
+/* =========================================================
    BUTTON
-========================= */
+========================================================= */
 
 .btn-primary {
-  border: none;
 
-  padding: 14px 28px;
+  border:
+    none;
 
-  border-radius: 30px;
+  padding:
+    14px 30px;
 
-  background: white;
-  color: #333;
+  border-radius:
+    30px;
 
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+  background:
+    white;
 
-  cursor: pointer;
+  color:
+    #333;
 
-  transition: 0.3s;
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:
+    14px;
+
+  cursor:
+    pointer;
+
+  transition:
+    all 0.3s ease;
+
 }
+
 
 .btn-primary:hover {
-  transform: translateY(-2px);
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 10px 25px
+    rgba(0, 0, 0, 0.15);
+
 }
 
 
-/* =========================
+/* =========================================================
    CONTENT
-========================= */
+========================================================= */
 
 .content {
-  padding: 80px 20px;
+
+  padding:
+    90px 20px;
+
 }
+
 
 .container {
-  width: 100%;
-  max-width: 850px;
 
-  margin: auto;
+  width:
+    100%;
+
+  max-width:
+    900px;
+
+  margin:
+    auto;
+
 }
+
+
+/* =========================================================
+   SECTION CARD
+========================================================= */
 
 .section-card {
-  background: white;
 
-  padding: 50px 30px;
+  background:
+    white;
 
-  margin-bottom: 25px;
+  padding:
+    55px 35px;
 
-  text-align: center;
+  margin-bottom:
+    30px;
 
-  border-radius: 10px;
+  text-align:
+    center;
+
+  border-radius:
+    14px;
 
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.05);
+    0 12px 35px
+    rgba(0, 0, 0, 0.05);
+
 }
+
 
 .section-label {
-  font-family: Arial, sans-serif;
 
-  font-size: 11px;
+  font-family:
+    Arial,
+    sans-serif;
 
-  letter-spacing: 4px;
+  font-size:
+    11px;
 
-  color: #999;
+  letter-spacing:
+    4px;
 
-  margin-bottom: 20px;
+  color:
+    #999;
+
+  margin-bottom:
+    20px;
+
 }
+
 
 .section-card h2 {
-  font-size: 35px;
-  font-weight: normal;
+
+  font-size:
+    38px;
+
+  font-weight:
+    normal;
+
 }
+
 
 .and {
-  display: block;
 
-  margin: 10px 0;
+  display:
+    block;
 
-  font-size: 28px;
+  margin:
+    10px 0;
 
-  font-style: italic;
-}
+  font-size:
+    28px;
 
-.location {
-  margin-top: 25px;
+  font-style:
+    italic;
 
-  font-family: Arial, sans-serif;
-
-  font-size: 14px;
-
-  color: #777;
-}
-
-.section-card h3 {
-  font-size: 28px;
-
-  font-weight: normal;
-
-  margin-bottom: 20px;
-}
-
-.section-card p {
-  line-height: 1.8;
-
-  color: #666;
 }
 
 
-/* =========================
-   ERROR
-========================= */
+.quote {
 
-.error-screen {
-  position: fixed;
-  inset: 0;
+  max-width:
+    650px;
 
-  z-index: 9999;
+  margin:
+    30px auto 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  line-height:
+    1.9;
 
-  padding: 20px;
+  color:
+    #777;
 
-  background: #f7f3ef;
+  font-size:
+    15px;
+
 }
 
-.error-box {
-  max-width: 450px;
 
-  padding: 40px;
+/* =========================================================
+   EVENT SECTION
+========================================================= */
 
-  background: white;
+.event-section {
 
-  text-align: center;
+  padding:
+    20px 0 50px;
 
-  border-radius: 10px;
+}
+
+
+.event-heading {
+
+  text-align:
+    center;
+
+  margin-bottom:
+    35px;
+
+}
+
+
+.event-heading h2 {
+
+  font-size:
+    38px;
+
+  font-weight:
+    normal;
+
+  margin-bottom:
+    18px;
+
+}
+
+
+.event-intro {
+
+  max-width:
+    600px;
+
+  margin:
+    auto;
+
+  line-height:
+    1.8;
+
+  color:
+    #777;
+
+  font-size:
+    15px;
+
+}
+
+
+/* =========================================================
+   EVENT CARD
+========================================================= */
+
+.event-card {
+
+  position:
+    relative;
+
+  background:
+    white;
+
+  padding:
+    45px 35px;
+
+  margin-bottom:
+    25px;
+
+  border-radius:
+    14px;
+
+  text-align:
+    center;
 
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.08);
+    0 12px 35px
+    rgba(0, 0, 0, 0.05);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
 }
+
+
+.event-card:hover {
+
+  transform:
+    translateY(-4px);
+
+  box-shadow:
+    0 18px 40px
+    rgba(0, 0, 0, 0.08);
+
+}
+
+
+.event-icon {
+
+  width:
+    50px;
+
+  height:
+    50px;
+
+  margin:
+    0 auto 20px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    50%;
+
+  background:
+    #f7f3ef;
+
+  color:
+    #777;
+
+  font-size:
+    22px;
+
+}
+
+
+.event-label {
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:
+    10px;
+
+  letter-spacing:
+    4px;
+
+  color:
+    #999;
+
+  margin-bottom:
+    10px;
+
+}
+
+
+.event-card h3 {
+
+  font-size:
+    28px;
+
+  font-weight:
+    normal;
+
+  margin-bottom:
+    35px;
+
+}
+
+
+/* =========================================================
+   EVENT DETAIL
+========================================================= */
+
+.event-detail {
+
+  max-width:
+    600px;
+
+  margin:
+    auto;
+
+}
+
+
+.detail-item {
+
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  text-align:
+    left;
+
+  padding:
+    18px 0;
+
+  border-bottom:
+    1px solid #eee;
+
+}
+
+
+.detail-item:last-child {
+
+  border-bottom:
+    none;
+
+}
+
+
+.detail-icon {
+
+  width:
+    45px;
+
+  min-width:
+    45px;
+
+  height:
+    45px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  margin-right:
+    15px;
+
+  border-radius:
+    50%;
+
+  background:
+    #f7f3ef;
+
+  font-size:
+    17px;
+
+}
+
+
+.detail-item strong {
+
+  display:
+    block;
+
+  margin-bottom:
+    5px;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:
+    12px;
+
+  color:
+    #999;
+
+}
+
+
+.detail-item p {
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:
+    14px;
+
+  line-height:
+    1.6;
+
+  color:
+    #444;
+
+}
+
+
+.detail-item small {
+
+  display:
+    block;
+
+  margin-top:
+    3px;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.6;
+
+  color:
+    #777;
+
+}
+
+
+/* =========================================================
+   THANK YOU
+========================================================= */
+
+.thank-you-card {
+
+  margin-top:
+    20px;
+
+}
+
+
+.section-card h3 {
+
+  font-size:
+    28px;
+
+  font-weight:
+    normal;
+
+  margin-bottom:
+    20px;
+
+}
+
+
+.section-card p {
+
+  line-height:
+    1.8;
+
+  color:
+    #666;
+
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.error-screen {
+
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    9999;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    #f7f3ef;
+
+}
+
+
+.error-box {
+
+  max-width:
+    450px;
+
+  padding:
+    40px;
+
+  background:
+    white;
+
+  text-align:
+    center;
+
+  border-radius:
+    12px;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.08);
+
+}
+
 
 .error-box h2 {
-  margin-bottom: 15px;
+
+  margin-bottom:
+    15px;
+
+  font-weight:
+    normal;
+
 }
+
 
 .error-box p {
-  margin-bottom: 25px;
 
-  color: #777;
+  margin-bottom:
+    25px;
+
+  color:
+    #777;
+
 }
 
 
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
 @media (max-width: 600px) {
 
-  .hero h1 {
-    font-size: 48px;
+
+  .hero {
+
+    min-height:
+      100svh;
+
   }
+
 
   .hero-content {
-    padding: 20px;
+
+    padding:
+      25px 18px;
+
   }
+
+
+  .small-title {
+
+    font-size:
+      10px;
+
+    letter-spacing:
+      4px;
+
+    margin-bottom:
+      20px;
+
+  }
+
+
+  .hero h1 {
+
+    font-size:
+      46px;
+
+    line-height:
+      1.05;
+
+  }
+
+
+  .date {
+
+    font-size:
+      14px;
+
+  }
+
+
+  .content {
+
+    padding:
+      60px 15px;
+
+  }
+
 
   .section-card {
-    padding: 40px 20px;
+
+    padding:
+      40px 20px;
+
+    border-radius:
+      12px;
+
   }
 
+
   .section-card h2 {
-    font-size: 30px;
+
+    font-size:
+      30px;
+
   }
+
+
+  .event-section {
+
+    padding:
+      10px 0 35px;
+
+  }
+
+
+  .event-heading h2 {
+
+    font-size:
+      30px;
+
+  }
+
+
+  .event-card {
+
+    padding:
+      35px 20px;
+
+  }
+
+
+  .event-card h3 {
+
+    font-size:
+      25px;
+
+  }
+
+
+  .detail-item {
+
+    padding:
+      15px 0;
+
+  }
+
+
+  .detail-icon {
+
+    width:
+      40px;
+
+    min-width:
+      40px;
+
+    height:
+      40px;
+
+    margin-right:
+      12px;
+
+  }
+
 
 }
