@@ -1,19 +1,30 @@
 /**
  * ==========================================
- * KONFIGURASI
+ * UNDANGAN ONLINE
+ * APP.JS - V1
  * ==========================================
- *
- * GANTI URL DI BAWAH DENGAN URL
- * WEB APP GOOGLE APPS SCRIPT
  */
-
-const API_URL =
-  'GANTI_DENGAN_URL_APPS_SCRIPT';
 
 
 /**
  * ==========================================
- * ELEMENT
+ * KONFIGURASI API
+ * ==========================================
+ *
+ * GANTI URL DI BAWAH DENGAN
+ * WEB APP URL GOOGLE APPS SCRIPT
+ *
+ * Contoh:
+ * https://script.google.com/macros/s/XXXXXXXX/exec
+ */
+
+const API_URL =
+  'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT';
+
+
+/**
+ * ==========================================
+ * ELEMENT HTML
  * ==========================================
  */
 
@@ -56,7 +67,7 @@ const openInvitation =
 
 document.addEventListener(
   'DOMContentLoaded',
-  () => {
+  function () {
 
     loadInvitation();
 
@@ -66,7 +77,7 @@ document.addEventListener(
 
 /**
  * ==========================================
- * LOAD DATA
+ * LOAD DATA DARI APPS SCRIPT
  * ==========================================
  */
 
@@ -74,9 +85,14 @@ async function loadInvitation() {
 
   try {
 
+    /**
+     * Cek URL API
+     */
+
     if (
       !API_URL ||
-      API_URL === 'GANTI_DENGAN_URL_APPS_SCRIPT'
+      API_URL ===
+      'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT'
     ) {
 
       throw new Error(
@@ -86,45 +102,73 @@ async function loadInvitation() {
     }
 
 
+    /**
+     * Request ke Google Apps Script
+     */
+
     const response =
       await fetch(
-        `${API_URL}?action=config`
+        API_URL + '?action=config'
       );
 
+
+    /**
+     * Cek HTTP response
+     */
 
     if (!response.ok) {
 
       throw new Error(
-        'Server tidak memberikan response yang valid.'
+        'Server Apps Script tidak dapat diakses.'
       );
 
     }
 
+
+    /**
+     * Ambil JSON
+     */
 
     const result =
       await response.json();
 
 
+    /**
+     * Cek status API
+     */
+
     if (!result.success) {
 
       throw new Error(
         result.message ||
-        'Data tidak berhasil diambil.'
+        'Data undangan gagal dimuat.'
       );
 
     }
 
 
+    /**
+     * Ambil data
+     */
+
     const data =
       result.data || {};
 
+
+    /**
+     * Tampilkan data
+     */
 
     renderInvitation(data);
 
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      'ERROR:',
+      error
+    );
+
 
     showError(
       error.message
@@ -137,40 +181,81 @@ async function loadInvitation() {
 
 /**
  * ==========================================
- * RENDER DATA
+ * RENDER DATA KE WEBSITE
  * ==========================================
  */
 
 function renderInvitation(data) {
 
+  /**
+   * Data pengantin
+   */
+
   const pria =
-    data.nama_pria || 'Nama Pria';
+    data.nama_pria ||
+    'Nama Pria';
 
   const wanita =
-    data.nama_wanita || 'Nama Wanita';
+    data.nama_wanita ||
+    'Nama Wanita';
+
+
+  /**
+   * Data acara
+   */
 
   const tanggal =
-    data.tanggal || '-';
+    data.tanggal ||
+    '-';
 
   const lokasi =
-    data.lokasi || '-';
+    data.lokasi ||
+    '-';
 
+
+  /**
+   * Nama pria
+   */
 
   namaPria.textContent =
     pria;
 
+
+  /**
+   * Nama wanita
+   */
+
   namaWanita.textContent =
     wanita;
 
+
+  /**
+   * Nama pasangan
+   */
+
   namaPengantin.textContent =
-    `${pria} & ${wanita}`;
+    pria + ' & ' + wanita;
+
+
+  /**
+   * Tanggal acara
+   */
 
   tanggalAcara.textContent =
     tanggal;
 
+
+  /**
+   * Lokasi acara
+   */
+
   lokasiAcara.textContent =
     lokasi;
 
+
+  /**
+   * Sembunyikan loading
+   */
 
   hideLoading();
 
@@ -185,13 +270,22 @@ function renderInvitation(data) {
 
 function hideLoading() {
 
-  loadingScreen.classList.add(
-    'hidden'
-  );
+  if (loadingScreen) {
 
-  app.classList.remove(
-    'hidden'
-  );
+    loadingScreen.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  if (app) {
+
+    app.classList.remove(
+      'hidden'
+    );
+
+  }
 
 }
 
@@ -204,39 +298,67 @@ function hideLoading() {
 
 function showError(message) {
 
-  loadingScreen.classList.add(
-    'hidden'
-  );
+  if (loadingScreen) {
 
-  app.classList.add(
-    'hidden'
-  );
+    loadingScreen.classList.add(
+      'hidden'
+    );
 
-  errorMessage.textContent =
-    message ||
-    'Terjadi kesalahan.';
+  }
 
-  errorScreen.classList.remove(
-    'hidden'
-  );
+
+  if (app) {
+
+    app.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  if (errorMessage) {
+
+    errorMessage.textContent =
+      message ||
+      'Terjadi kesalahan.';
+
+  }
+
+
+  if (errorScreen) {
+
+    errorScreen.classList.remove(
+      'hidden'
+    );
+
+  }
 
 }
 
 
 /**
  * ==========================================
- * OPEN INVITATION
+ * BUTTON BUKA UNDANGAN
  * ==========================================
  */
 
-openInvitation.addEventListener(
-  'click',
-  () => {
+if (openInvitation) {
 
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth'
-    });
+  openInvitation.addEventListener(
+    'click',
+    function () {
 
-  }
-);
+      window.scrollTo({
+
+        top:
+          window.innerHeight,
+
+        behavior:
+          'smooth'
+
+      });
+
+    }
+  );
+
+}
