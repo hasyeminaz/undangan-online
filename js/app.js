@@ -1,31 +1,31 @@
 /**
- * ==========================================
+ * ============================================================
  * UNDANGAN ONLINE
- * APP.JS - V1
- * ==========================================
+ * APP.JS
+ * VERSION 2
+ * ============================================================
+ *
+ * Frontend GitHub Pages
+ * terhubung dengan Google Apps Script API
+ *
+ * ============================================================
  */
 
 
 /**
- * ==========================================
+ * ============================================================
  * KONFIGURASI API
- * ==========================================
- *
- * GANTI URL DI BAWAH DENGAN
- * WEB APP URL GOOGLE APPS SCRIPT
- *
- * Contoh:
- * https://script.google.com/macros/s/XXXXXXXX/exec
+ * ============================================================
  */
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbxTObKC_EdE136GXh_eOc_ZzlsrJe7g0UWQaRHPTQji9gKIEoSmxFmYTusBPw5CWvyF4Q/exec';
+  'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT';
 
 
 /**
- * ==========================================
+ * ============================================================
  * ELEMENT HTML
- * ==========================================
+ * ============================================================
  */
 
 const loadingScreen =
@@ -60,9 +60,22 @@ const openInvitation =
 
 
 /**
- * ==========================================
+ * ============================================================
+ * DATA GLOBAL
+ * ============================================================
+ *
+ * Data disimpan di sini agar nantinya fitur lain
+ * seperti countdown, RSVP, gallery, dan tamu
+ * bisa menggunakan data yang sama.
+ */
+
+let invitationData = null;
+
+
+/**
+ * ============================================================
  * START APPLICATION
- * ==========================================
+ * ============================================================
  */
 
 document.addEventListener(
@@ -76,9 +89,9 @@ document.addEventListener(
 
 
 /**
- * ==========================================
- * LOAD DATA DARI APPS SCRIPT
- * ==========================================
+ * ============================================================
+ * LOAD DATA UNDANGAN
+ * ============================================================
  */
 
 async function loadInvitation() {
@@ -86,7 +99,9 @@ async function loadInvitation() {
   try {
 
     /**
-     * Cek URL API
+     * --------------------------------------------------------
+     * CEK URL API
+     * --------------------------------------------------------
      */
 
     if (
@@ -103,17 +118,22 @@ async function loadInvitation() {
 
 
     /**
-     * Request ke Google Apps Script
+     * --------------------------------------------------------
+     * REQUEST KE GOOGLE APPS SCRIPT
+     * --------------------------------------------------------
      */
 
     const response =
       await fetch(
-        API_URL + '?action=config'
+        API_URL +
+        '?action=config'
       );
 
 
     /**
-     * Cek HTTP response
+     * --------------------------------------------------------
+     * CEK RESPONSE HTTP
+     * --------------------------------------------------------
      */
 
     if (!response.ok) {
@@ -126,7 +146,9 @@ async function loadInvitation() {
 
 
     /**
-     * Ambil JSON
+     * --------------------------------------------------------
+     * PARSE JSON
+     * --------------------------------------------------------
      */
 
     const result =
@@ -134,38 +156,51 @@ async function loadInvitation() {
 
 
     /**
-     * Cek status API
+     * --------------------------------------------------------
+     * CEK RESPONSE API
+     * --------------------------------------------------------
      */
 
-    if (!result.success) {
+    if (
+      !result ||
+      result.success !== true
+    ) {
 
       throw new Error(
-        result.message ||
-        'Data undangan gagal dimuat.'
+        result &&
+        result.message
+          ? result.message
+          : 'Data undangan gagal dimuat.'
       );
 
     }
 
 
     /**
-     * Ambil data
+     * --------------------------------------------------------
+     * SIMPAN DATA GLOBAL
+     * --------------------------------------------------------
      */
 
-    const data =
+    invitationData =
       result.data || {};
 
 
     /**
-     * Tampilkan data
+     * --------------------------------------------------------
+     * RENDER WEBSITE
+     * --------------------------------------------------------
      */
 
-    renderInvitation(data);
+    renderInvitation(
+      invitationData
+    );
 
 
   } catch (error) {
 
     console.error(
-      'ERROR:',
+      'Gagal memuat undangan:',
       error
     );
 
@@ -180,81 +215,136 @@ async function loadInvitation() {
 
 
 /**
- * ==========================================
- * RENDER DATA KE WEBSITE
- * ==========================================
+ * ============================================================
+ * RENDER DATA UNDANGAN
+ * ============================================================
  */
 
 function renderInvitation(data) {
 
   /**
-   * Data pengantin
+   * --------------------------------------------------------
+   * AMBIL DATA PENGANTIN
+   * --------------------------------------------------------
+   *
+   * V2 menggunakan:
+   *
+   * data.pengantin
+   *
+   * tetapi tetap menyediakan fallback ke V1.
    */
 
-  const pria =
-    data.nama_pria ||
-    'Nama Pria';
-
-  const wanita =
-    data.nama_wanita ||
-    'Nama Wanita';
-
-
-  /**
-   * Data acara
-   */
-
-  const tanggal =
-    data.tanggal ||
-    '-';
-
-  const lokasi =
-    data.lokasi ||
-    '-';
+  const pengantin =
+    data.pengantin || {};
 
 
   /**
    * Nama pria
    */
 
-  namaPria.textContent =
-    pria;
+  const pria =
+    pengantin.nama_pria ||
+    data.nama_pria ||
+    'Nama Pria';
 
 
   /**
    * Nama wanita
    */
 
-  namaWanita.textContent =
-    wanita;
+  const wanita =
+    pengantin.nama_wanita ||
+    data.nama_wanita ||
+    'Nama Wanita';
 
 
   /**
-   * Nama pasangan
+   * --------------------------------------------------------
+   * AMBIL DATA ACARA
+   * --------------------------------------------------------
    */
 
-  namaPengantin.textContent =
-    pria + ' & ' + wanita;
+  const acara =
+    data.acara || {};
 
 
   /**
-   * Tanggal acara
+   * Tanggal utama
+   *
+   * Untuk sementara kita menggunakan tanggal akad.
    */
 
-  tanggalAcara.textContent =
-    tanggal;
+  const tanggal =
+    acara.akad_tanggal ||
+    data.tanggal ||
+    '-';
 
 
   /**
-   * Lokasi acara
+   * Lokasi utama
+   *
+   * Untuk sementara menggunakan alamat akad.
    */
 
-  lokasiAcara.textContent =
-    lokasi;
+  const lokasi =
+    acara.akad_alamat ||
+    acara.akad_lokasi ||
+    data.lokasi ||
+    '-';
 
 
   /**
-   * Sembunyikan loading
+   * --------------------------------------------------------
+   * MASUKKAN DATA KE HTML
+   * --------------------------------------------------------
+   */
+
+  if (namaPria) {
+
+    namaPria.textContent =
+      pria;
+
+  }
+
+
+  if (namaWanita) {
+
+    namaWanita.textContent =
+      wanita;
+
+  }
+
+
+  if (namaPengantin) {
+
+    namaPengantin.textContent =
+      pria +
+      ' & ' +
+      wanita;
+
+  }
+
+
+  if (tanggalAcara) {
+
+    tanggalAcara.textContent =
+      tanggal;
+
+  }
+
+
+  if (lokasiAcara) {
+
+    lokasiAcara.textContent =
+      lokasi;
+
+  }
+
+
+  /**
+   * --------------------------------------------------------
+   * DATA BERHASIL DITAMPILKAN
+   * --------------------------------------------------------
    */
 
   hideLoading();
@@ -263,9 +353,9 @@ function renderInvitation(data) {
 
 
 /**
- * ==========================================
- * HIDE LOADING
- * ==========================================
+ * ============================================================
+ * HIDE LOADING SCREEN
+ * ============================================================
  */
 
 function hideLoading() {
@@ -291,12 +381,16 @@ function hideLoading() {
 
 
 /**
- * ==========================================
+ * ============================================================
  * SHOW ERROR
- * ==========================================
+ * ============================================================
  */
 
 function showError(message) {
+
+  /**
+   * Sembunyikan loading
+   */
 
   if (loadingScreen) {
 
@@ -307,6 +401,10 @@ function showError(message) {
   }
 
 
+  /**
+   * Sembunyikan aplikasi
+   */
+
   if (app) {
 
     app.classList.add(
@@ -316,6 +414,10 @@ function showError(message) {
   }
 
 
+  /**
+   * Tampilkan pesan error
+   */
+
   if (errorMessage) {
 
     errorMessage.textContent =
@@ -324,6 +426,10 @@ function showError(message) {
 
   }
 
+
+  /**
+   * Tampilkan error screen
+   */
 
   if (errorScreen) {
 
@@ -337,9 +443,9 @@ function showError(message) {
 
 
 /**
- * ==========================================
+ * ============================================================
  * BUTTON BUKA UNDANGAN
- * ==========================================
+ * ============================================================
  */
 
 if (openInvitation) {
@@ -359,6 +465,81 @@ if (openInvitation) {
       });
 
     }
+  );
+
+}
+
+
+/**
+ * ============================================================
+ * FUNGSI AKSES DATA
+ * ============================================================
+ *
+ * Fungsi ini sengaja kita siapkan dari sekarang.
+ *
+ * Nanti fitur:
+ * - Countdown
+ * - RSVP
+ * - Tamu
+ * - Gallery
+ * - Acara
+ *
+ * bisa mengambil data tanpa request API berulang-ulang.
+ */
+
+
+/**
+ * Ambil seluruh data undangan
+ */
+
+function getInvitationData() {
+
+  return invitationData;
+
+}
+
+
+/**
+ * Ambil data pengantin
+ */
+
+function getPengantinData() {
+
+  if (
+    !invitationData
+  ) {
+
+    return {};
+
+  }
+
+
+  return (
+    invitationData.pengantin ||
+    {}
+  );
+
+}
+
+
+/**
+ * Ambil data acara
+ */
+
+function getAcaraData() {
+
+  if (
+    !invitationData
+  ) {
+
+    return {};
+
+  }
+
+
+  return (
+    invitationData.acara ||
+    {}
   );
 
 }
