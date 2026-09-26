@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -14,29 +15,68 @@
     content="Undangan Pernikahan Online"
   >
 
+  <meta
+    name="theme-color"
+    content="#f7f3ef"
+  >
+
   <title>Undangan Pernikahan</title>
 
-  <link rel="stylesheet" href="css/style.css">
+
+  <!-- CSS -->
+
+  <link
+    rel="stylesheet"
+    href="css/style.css?v=4"
+  >
+
 </head>
+
 
 <body>
 
-  <!-- LOADING -->
-  <div id="loadingScreen" class="loading-screen">
+
+  <!-- ==========================================
+       LOADING SCREEN
+  =========================================== -->
+
+  <div
+    id="loadingScreen"
+    class="loading-screen"
+  >
+
     <div class="loading-content">
+
       <div class="loader"></div>
-      <p>Memuat undangan...</p>
+
+      <p>
+        Memuat undangan...
+      </p>
+
     </div>
+
   </div>
 
 
-  <!-- MAIN -->
-  <main id="app" class="app hidden">
 
-    <!-- HERO -->
+  <!-- ==========================================
+       APLIKASI UTAMA
+  =========================================== -->
+
+  <main
+    id="app"
+    class="app hidden"
+  >
+
+
+    <!-- ========================================
+         HERO
+    ========================================= -->
+
     <section class="hero">
 
       <div class="overlay"></div>
+
 
       <div class="hero-content">
 
@@ -44,30 +84,45 @@
           THE WEDDING OF
         </p>
 
+
         <h1 id="namaPengantin">
           Loading...
         </h1>
 
-        <p id="tanggalAcara" class="date">
+
+        <p
+          id="tanggalAcara"
+          class="date"
+        >
           -
         </p>
+
 
         <button
           id="openInvitation"
           class="btn-primary"
+          type="button"
         >
+
           Buka Undangan
+
         </button>
+
 
       </div>
 
     </section>
 
 
-    <!-- CONTENT -->
+
+    <!-- ========================================
+         INFORMASI PENGANTIN
+    ========================================= -->
+
     <section class="content">
 
       <div class="container">
+
 
         <div class="section-card">
 
@@ -75,48 +130,291 @@
             WEDDING INVITATION
           </p>
 
+
           <h2 id="namaPria">
             -
           </h2>
+
 
           <span class="and">
             &
           </span>
 
+
           <h2 id="namaWanita">
             -
           </h2>
 
-          <p id="lokasiAcara" class="location">
+
+          <p
+            id="quotePengantin"
+            class="quote"
+          >
             -
           </p>
 
         </div>
 
 
-        <div class="section-card">
+
+        <!-- ======================================
+             ACARA
+        ======================================= -->
+
+        <section class="event-section">
+
+
+          <div class="event-heading">
+
+            <p class="section-label">
+              SAVE THE DATE
+            </p>
+
+            <h2>
+              Our Special Day
+            </h2>
+
+            <p class="event-intro">
+              Dengan penuh kebahagiaan,
+              kami mengundang Anda untuk
+              hadir di hari bahagia kami.
+            </p>
+
+          </div>
+
+
+
+          <!-- ====================================
+               AKAD
+          ===================================== -->
+
+          <div class="event-card">
+
+            <div class="event-icon">
+              ♡
+            </div>
+
+
+            <p class="event-label">
+              AKAD NIKAH
+            </p>
+
+
+            <h3>
+              Pernikahan
+            </h3>
+
+
+            <div class="event-detail">
+
+              <div class="detail-item">
+
+                <span class="detail-icon">
+                  📅
+                </span>
+
+                <div>
+
+                  <strong>
+                    Tanggal
+                  </strong>
+
+                  <p id="akadTanggal">
+                    -
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <span class="detail-icon">
+                  🕐
+                </span>
+
+                <div>
+
+                  <strong>
+                    Waktu
+                  </strong>
+
+                  <p id="akadWaktu">
+                    -
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <span class="detail-icon">
+                  📍
+                </span>
+
+                <div>
+
+                  <strong>
+                    Tempat
+                  </strong>
+
+                  <p id="akadLokasi">
+                    -
+                  </p>
+
+                  <small id="akadAlamat">
+                    -
+                  </small>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ====================================
+               RESEPSI
+          ===================================== -->
+
+          <div class="event-card">
+
+            <div class="event-icon">
+              ♡
+            </div>
+
+
+            <p class="event-label">
+              RESEPSI
+            </p>
+
+
+            <h3>
+              Resepsi Pernikahan
+            </h3>
+
+
+            <div class="event-detail">
+
+              <div class="detail-item">
+
+                <span class="detail-icon">
+                  📅
+                </span>
+
+                <div>
+
+                  <strong>
+                    Tanggal
+                  </strong>
+
+                  <p id="resepsiTanggal">
+                    -
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <span class="detail-icon">
+                  🕐
+                </span>
+
+                <div>
+
+                  <strong>
+                    Waktu
+                  </strong>
+
+                  <p id="resepsiWaktu">
+                    -
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <div class="detail-item">
+
+                <span class="detail-icon">
+                  📍
+                </span>
+
+                <div>
+
+                  <strong>
+                    Tempat
+                  </strong>
+
+                  <p id="resepsiLokasi">
+                    -
+                  </p>
+
+                  <small id="resepsiAlamat">
+                    -
+                  </small>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+        </section>
+
+
+
+        <!-- ======================================
+             PENUTUP
+        ======================================= -->
+
+        <div class="section-card thank-you-card">
 
           <h3>
             Terima Kasih
           </h3>
 
+
           <p>
-            Dengan penuh kebahagiaan, kami mengundang
-            Anda untuk hadir dan memberikan doa restu
-            pada hari bahagia kami.
+            Merupakan suatu kehormatan dan
+            kebahagiaan bagi kami apabila
+            Anda berkenan hadir dan memberikan
+            doa restu kepada kami.
           </p>
 
         </div>
+
 
       </div>
 
     </section>
 
+
   </main>
 
 
-  <!-- ERROR -->
-  <div id="errorScreen" class="error-screen hidden">
+
+  <!-- ==========================================
+       ERROR SCREEN
+  =========================================== -->
+
+  <div
+    id="errorScreen"
+    class="error-screen hidden"
+  >
 
     <div class="error-box">
 
@@ -124,15 +422,20 @@
         Terjadi Kesalahan
       </h2>
 
+
       <p id="errorMessage">
         Data undangan tidak dapat dimuat.
       </p>
 
+
       <button
-        onclick="location.reload()"
+        onclick="location.reload(true)"
         class="btn-primary"
+        type="button"
       >
+
         Coba Lagi
+
       </button>
 
     </div>
@@ -140,7 +443,16 @@
   </div>
 
 
-  <script src="js/app.js"></script>
+
+  <!-- ==========================================
+       JAVASCRIPT
+  =========================================== -->
+
+  <script
+    src="js/app.js?v=4"
+    defer
+  ></script>
+
 
 </body>
 
