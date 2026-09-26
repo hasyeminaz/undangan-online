@@ -2,12 +2,17 @@
  * ============================================================
  * UNDANGAN ONLINE
  * APP.JS
- * VERSION 2
+ * VERSION 2 - STEP 4
  * ============================================================
  *
- * Frontend GitHub Pages
- * terhubung dengan Google Apps Script API
+ * Frontend:
+ * GitHub Pages
  *
+ * Backend:
+ * Google Apps Script
+ *
+ * Database:
+ * Google Sheets
  * ============================================================
  */
 
@@ -16,10 +21,19 @@
  * ============================================================
  * KONFIGURASI API
  * ============================================================
+ *
+ * PENTING:
+ *
+ * GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT
+ * YANG SUDAH KAMU PUNYA.
+ *
+ * Contoh:
+ *
+ * https://script.google.com/macros/s/XXXXXXXX/exec
  */
 
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbwHwdmCvqNbqUd_X5h8n4XwwP7LCSXhFs_Rp_rBH0veEQdSz0VVi44-jID3v4iq5MBltQ/exec';
+  'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT';
 
 
 /**
@@ -28,45 +42,143 @@ const API_URL =
  * ============================================================
  */
 
+
+/* Loading */
+
 const loadingScreen =
-  document.getElementById('loadingScreen');
+  document.getElementById(
+    'loadingScreen'
+  );
+
+
+/* Main application */
 
 const app =
-  document.getElementById('app');
+  document.getElementById(
+    'app'
+  );
+
+
+/* Error */
 
 const errorScreen =
-  document.getElementById('errorScreen');
+  document.getElementById(
+    'errorScreen'
+  );
+
 
 const errorMessage =
-  document.getElementById('errorMessage');
+  document.getElementById(
+    'errorMessage'
+  );
+
+
+/* Pengantin */
 
 const namaPengantin =
-  document.getElementById('namaPengantin');
+  document.getElementById(
+    'namaPengantin'
+  );
+
 
 const namaPria =
-  document.getElementById('namaPria');
+  document.getElementById(
+    'namaPria'
+  );
+
 
 const namaWanita =
-  document.getElementById('namaWanita');
+  document.getElementById(
+    'namaWanita'
+  );
+
+
+const quotePengantin =
+  document.getElementById(
+    'quotePengantin'
+  );
+
+
+/* Hero */
 
 const tanggalAcara =
-  document.getElementById('tanggalAcara');
+  document.getElementById(
+    'tanggalAcara'
+  );
+
+
+/* Lokasi utama */
 
 const lokasiAcara =
-  document.getElementById('lokasiAcara');
+  document.getElementById(
+    'lokasiAcara'
+  );
+
+
+/* Button */
 
 const openInvitation =
-  document.getElementById('openInvitation');
+  document.getElementById(
+    'openInvitation'
+  );
+
+
+/* Akad */
+
+const akadTanggal =
+  document.getElementById(
+    'akadTanggal'
+  );
+
+
+const akadWaktu =
+  document.getElementById(
+    'akadWaktu'
+  );
+
+
+const akadLokasi =
+  document.getElementById(
+    'akadLokasi'
+  );
+
+
+const akadAlamat =
+  document.getElementById(
+    'akadAlamat'
+  );
+
+
+/* Resepsi */
+
+const resepsiTanggal =
+  document.getElementById(
+    'resepsiTanggal'
+  );
+
+
+const resepsiWaktu =
+  document.getElementById(
+    'resepsiWaktu'
+  );
+
+
+const resepsiLokasi =
+  document.getElementById(
+    'resepsiLokasi'
+  );
+
+
+const resepsiAlamat =
+  document.getElementById(
+    'resepsiAlamat'
+  );
 
 
 /**
  * ============================================================
  * DATA GLOBAL
  * ============================================================
- *
- * Data disimpan di sini agar nantinya fitur lain
- * seperti countdown, RSVP, gallery, dan tamu
- * bisa menggunakan data yang sama.
  */
 
 let invitationData = null;
@@ -90,7 +202,7 @@ document.addEventListener(
 
 /**
  * ============================================================
- * LOAD DATA UNDANGAN
+ * LOAD DATA
  * ============================================================
  */
 
@@ -98,16 +210,15 @@ async function loadInvitation() {
 
   try {
 
-    /**
-     * --------------------------------------------------------
-     * CEK URL API
-     * --------------------------------------------------------
-     */
+
+    /* --------------------------------------------------------
+       CEK URL API
+    -------------------------------------------------------- */
 
     if (
       !API_URL ||
       API_URL ===
-      'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT'
+        'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT'
     ) {
 
       throw new Error(
@@ -117,11 +228,9 @@ async function loadInvitation() {
     }
 
 
-    /**
-     * --------------------------------------------------------
-     * REQUEST KE GOOGLE APPS SCRIPT
-     * --------------------------------------------------------
-     */
+    /* --------------------------------------------------------
+       REQUEST API
+    -------------------------------------------------------- */
 
     const response =
       await fetch(
@@ -130,11 +239,9 @@ async function loadInvitation() {
       );
 
 
-    /**
-     * --------------------------------------------------------
-     * CEK RESPONSE HTTP
-     * --------------------------------------------------------
-     */
+    /* --------------------------------------------------------
+       CEK HTTP
+    -------------------------------------------------------- */
 
     if (!response.ok) {
 
@@ -145,21 +252,17 @@ async function loadInvitation() {
     }
 
 
-    /**
-     * --------------------------------------------------------
-     * PARSE JSON
-     * --------------------------------------------------------
-     */
+    /* --------------------------------------------------------
+       PARSE JSON
+    -------------------------------------------------------- */
 
     const result =
       await response.json();
 
 
-    /**
-     * --------------------------------------------------------
-     * CEK RESPONSE API
-     * --------------------------------------------------------
-     */
+    /* --------------------------------------------------------
+       CEK STATUS
+    -------------------------------------------------------- */
 
     if (
       !result ||
@@ -176,21 +279,17 @@ async function loadInvitation() {
     }
 
 
-    /**
-     * --------------------------------------------------------
-     * SIMPAN DATA GLOBAL
-     * --------------------------------------------------------
-     */
+    /* --------------------------------------------------------
+       SIMPAN DATA
+    -------------------------------------------------------- */
 
     invitationData =
       result.data || {};
 
 
-    /**
-     * --------------------------------------------------------
-     * RENDER WEBSITE
-     * --------------------------------------------------------
-     */
+    /* --------------------------------------------------------
+       RENDER
+    -------------------------------------------------------- */
 
     renderInvitation(
       invitationData
@@ -216,31 +315,24 @@ async function loadInvitation() {
 
 /**
  * ============================================================
- * RENDER DATA UNDANGAN
+ * RENDER UNDANGAN
  * ============================================================
  */
 
-function renderInvitation(data) {
+function renderInvitation(
+  data
+) {
+
 
   /**
-   * --------------------------------------------------------
-   * AMBIL DATA PENGANTIN
-   * --------------------------------------------------------
-   *
-   * V2 menggunakan:
-   *
-   * data.pengantin
-   *
-   * tetapi tetap menyediakan fallback ke V1.
+   * ==========================================================
+   * DATA PENGANTIN
+   * ==========================================================
    */
 
   const pengantin =
     data.pengantin || {};
 
-
-  /**
-   * Nama pria
-   */
 
   const pria =
     pengantin.nama_pria ||
@@ -248,55 +340,110 @@ function renderInvitation(data) {
     'Nama Pria';
 
 
-  /**
-   * Nama wanita
-   */
-
   const wanita =
     pengantin.nama_wanita ||
     data.nama_wanita ||
     'Nama Wanita';
 
 
+  const panggilanPria =
+    pengantin.panggilan_pria ||
+    '';
+
+
+  const panggilanWanita =
+    pengantin.panggilan_wanita ||
+    '';
+
+
+  const quote =
+    pengantin.quote ||
+    '';
+
+
   /**
-   * --------------------------------------------------------
-   * AMBIL DATA ACARA
-   * --------------------------------------------------------
+   * ==========================================================
+   * DATA ACARA
+   * ==========================================================
    */
 
   const acara =
     data.acara || {};
 
 
-  /**
-   * Tanggal utama
-   *
-   * Untuk sementara kita menggunakan tanggal akad.
-   */
+  /* Akad */
 
-  const tanggal =
+  const akadDate =
     acara.akad_tanggal ||
     data.tanggal ||
     '-';
 
 
-  /**
-   * Lokasi utama
-   *
-   * Untuk sementara menggunakan alamat akad.
-   */
+  const akadTime =
+    acara.akad_waktu ||
+    '-';
 
-  const lokasi =
-    acara.akad_alamat ||
+
+  const akadPlace =
     acara.akad_lokasi ||
-    data.lokasi ||
+    '-';
+
+
+  const akadAddress =
+    acara.akad_alamat ||
+    '-';
+
+
+  /* Resepsi */
+
+  const resepsiDate =
+    acara.resepsi_tanggal ||
+    '-';
+
+
+  const resepsiTime =
+    acara.resepsi_waktu ||
+    '-';
+
+
+  const resepsiPlace =
+    acara.resepsi_lokasi ||
+    '-';
+
+
+  const resepsiAddress =
+    acara.resepsi_alamat ||
     '-';
 
 
   /**
-   * --------------------------------------------------------
-   * MASUKKAN DATA KE HTML
-   * --------------------------------------------------------
+   * ==========================================================
+   * HERO
+   * ==========================================================
+   */
+
+  if (namaPengantin) {
+
+    namaPengantin.textContent =
+      pria +
+      ' & ' +
+      wanita;
+
+  }
+
+
+  if (tanggalAcara) {
+
+    tanggalAcara.textContent =
+      akadDate;
+
+  }
+
+
+  /**
+   * ==========================================================
+   * NAMA PENGANTIN
+   * ==========================================================
    */
 
   if (namaPria) {
@@ -315,36 +462,114 @@ function renderInvitation(data) {
   }
 
 
-  if (namaPengantin) {
+  /**
+   * ==========================================================
+   * QUOTE
+   * ==========================================================
+   */
 
-    namaPengantin.textContent =
-      pria +
-      ' & ' +
-      wanita;
+  if (quotePengantin) {
 
-  }
-
-
-  if (tanggalAcara) {
-
-    tanggalAcara.textContent =
-      tanggal;
-
-  }
-
-
-  if (lokasiAcara) {
-
-    lokasiAcara.textContent =
-      lokasi;
+    quotePengantin.textContent =
+      quote;
 
   }
 
 
   /**
-   * --------------------------------------------------------
-   * DATA BERHASIL DITAMPILKAN
-   * --------------------------------------------------------
+   * ==========================================================
+   * LOKASI UTAMA
+   * ==========================================================
+   */
+
+  if (lokasiAcara) {
+
+    lokasiAcara.textContent =
+      akadAddress;
+
+  }
+
+
+  /**
+   * ==========================================================
+   * AKAD
+   * ==========================================================
+   */
+
+  if (akadTanggal) {
+
+    akadTanggal.textContent =
+      akadDate;
+
+  }
+
+
+  if (akadWaktu) {
+
+    akadWaktu.textContent =
+      akadTime;
+
+  }
+
+
+  if (akadLokasi) {
+
+    akadLokasi.textContent =
+      akadPlace;
+
+  }
+
+
+  if (akadAlamat) {
+
+    akadAlamat.textContent =
+      akadAddress;
+
+  }
+
+
+  /**
+   * ==========================================================
+   * RESEPSI
+   * ==========================================================
+   */
+
+  if (resepsiTanggal) {
+
+    resepsiTanggal.textContent =
+      resepsiDate;
+
+  }
+
+
+  if (resepsiWaktu) {
+
+    resepsiWaktu.textContent =
+      resepsiTime;
+
+  }
+
+
+  if (resepsiLokasi) {
+
+    resepsiLokasi.textContent =
+      resepsiPlace;
+
+  }
+
+
+  if (resepsiAlamat) {
+
+    resepsiAlamat.textContent =
+      resepsiAddress;
+
+  }
+
+
+  /**
+   * ==========================================================
+   * DATA SELESAI
+   * ==========================================================
    */
 
   hideLoading();
@@ -354,7 +579,7 @@ function renderInvitation(data) {
 
 /**
  * ============================================================
- * HIDE LOADING SCREEN
+ * HIDE LOADING
  * ============================================================
  */
 
@@ -386,11 +611,9 @@ function hideLoading() {
  * ============================================================
  */
 
-function showError(message) {
-
-  /**
-   * Sembunyikan loading
-   */
+function showError(
+  message
+) {
 
   if (loadingScreen) {
 
@@ -401,10 +624,6 @@ function showError(message) {
   }
 
 
-  /**
-   * Sembunyikan aplikasi
-   */
-
   if (app) {
 
     app.classList.add(
@@ -414,10 +633,6 @@ function showError(message) {
   }
 
 
-  /**
-   * Tampilkan pesan error
-   */
-
   if (errorMessage) {
 
     errorMessage.textContent =
@@ -426,10 +641,6 @@ function showError(message) {
 
   }
 
-
-  /**
-   * Tampilkan error screen
-   */
 
   if (errorScreen) {
 
@@ -472,24 +683,15 @@ if (openInvitation) {
 
 /**
  * ============================================================
- * FUNGSI AKSES DATA
+ * DATA ACCESS
  * ============================================================
  *
- * Fungsi ini sengaja kita siapkan dari sekarang.
- *
- * Nanti fitur:
- * - Countdown
- * - RSVP
- * - Tamu
- * - Gallery
- * - Acara
- *
- * bisa mengambil data tanpa request API berulang-ulang.
+ * Fungsi ini akan kita gunakan pada fitur berikutnya.
  */
 
 
 /**
- * Ambil seluruh data undangan
+ * Seluruh data
  */
 
 function getInvitationData() {
@@ -500,14 +702,12 @@ function getInvitationData() {
 
 
 /**
- * Ambil data pengantin
+ * Data pengantin
  */
 
 function getPengantinData() {
 
-  if (
-    !invitationData
-  ) {
+  if (!invitationData) {
 
     return {};
 
@@ -523,14 +723,12 @@ function getPengantinData() {
 
 
 /**
- * Ambil data acara
+ * Data acara
  */
 
 function getAcaraData() {
 
-  if (
-    !invitationData
-  ) {
+  if (!invitationData) {
 
     return {};
 
