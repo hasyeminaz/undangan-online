@@ -2,17 +2,7 @@
  * ============================================================
  * UNDANGAN ONLINE
  * APP.JS
- * VERSION 2 - STEP 4
- * ============================================================
- *
- * Frontend:
- * GitHub Pages
- *
- * Backend:
- * Google Apps Script
- *
- * Database:
- * Google Sheets
+ * VERSION 2 - STEP 5
  * ============================================================
  */
 
@@ -22,14 +12,7 @@
  * KONFIGURASI API
  * ============================================================
  *
- * PENTING:
- *
- * GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT
- * YANG SUDAH KAMU PUNYA.
- *
- * Contoh:
- *
- * https://script.google.com/macros/s/XXXXXXXX/exec
+ * GANTI DENGAN URL WEB APP APPS SCRIPT KAMU.
  */
 
 const API_URL =
@@ -51,7 +34,7 @@ const loadingScreen =
   );
 
 
-/* Main application */
+/* Application */
 
 const app =
   document.getElementById(
@@ -107,8 +90,6 @@ const tanggalAcara =
   );
 
 
-/* Lokasi utama */
-
 const lokasiAcara =
   document.getElementById(
     'lokasiAcara'
@@ -123,7 +104,9 @@ const openInvitation =
   );
 
 
-/* Akad */
+/* ============================================================
+   AKAD
+============================================================ */
 
 const akadTanggal =
   document.getElementById(
@@ -149,7 +132,15 @@ const akadAlamat =
   );
 
 
-/* Resepsi */
+const akadMapsButton =
+  document.getElementById(
+    'akadMapsButton'
+  );
+
+
+/* ============================================================
+   RESEPSI
+============================================================ */
 
 const resepsiTanggal =
   document.getElementById(
@@ -175,6 +166,12 @@ const resepsiAlamat =
   );
 
 
+const resepsiMapsButton =
+  document.getElementById(
+    'resepsiMapsButton'
+  );
+
+
 /**
  * ============================================================
  * DATA GLOBAL
@@ -186,7 +183,7 @@ let invitationData = null;
 
 /**
  * ============================================================
- * START APPLICATION
+ * START
  * ============================================================
  */
 
@@ -240,7 +237,7 @@ async function loadInvitation() {
 
 
     /* --------------------------------------------------------
-       CEK HTTP
+       CEK RESPONSE
     -------------------------------------------------------- */
 
     if (!response.ok) {
@@ -253,7 +250,7 @@ async function loadInvitation() {
 
 
     /* --------------------------------------------------------
-       PARSE JSON
+       JSON
     -------------------------------------------------------- */
 
     const result =
@@ -261,7 +258,7 @@ async function loadInvitation() {
 
 
     /* --------------------------------------------------------
-       CEK STATUS
+       CEK STATUS API
     -------------------------------------------------------- */
 
     if (
@@ -324,11 +321,9 @@ function renderInvitation(
 ) {
 
 
-  /**
-   * ==========================================================
-   * DATA PENGANTIN
-   * ==========================================================
-   */
+  /* ==========================================================
+     DATA PENGANTIN
+  ========================================================== */
 
   const pengantin =
     data.pengantin || {};
@@ -346,32 +341,22 @@ function renderInvitation(
     'Nama Wanita';
 
 
-  const panggilanPria =
-    pengantin.panggilan_pria ||
-    '';
-
-
-  const panggilanWanita =
-    pengantin.panggilan_wanita ||
-    '';
-
-
   const quote =
     pengantin.quote ||
     '';
 
 
-  /**
-   * ==========================================================
-   * DATA ACARA
-   * ==========================================================
-   */
+  /* ==========================================================
+     DATA ACARA
+  ========================================================== */
 
   const acara =
     data.acara || {};
 
 
-  /* Akad */
+  /* ==========================================================
+     AKAD
+  ========================================================== */
 
   const akadDate =
     acara.akad_tanggal ||
@@ -394,7 +379,9 @@ function renderInvitation(
     '-';
 
 
-  /* Resepsi */
+  /* ==========================================================
+     RESEPSI
+  ========================================================== */
 
   const resepsiDate =
     acara.resepsi_tanggal ||
@@ -416,11 +403,18 @@ function renderInvitation(
     '-';
 
 
-  /**
-   * ==========================================================
-   * HERO
-   * ==========================================================
-   */
+  /* ==========================================================
+     GOOGLE MAPS
+  ========================================================== */
+
+  const mapsUrl =
+    acara.maps_url ||
+    '';
+
+
+  /* ==========================================================
+     HERO
+  ========================================================== */
 
   if (namaPengantin) {
 
@@ -440,11 +434,9 @@ function renderInvitation(
   }
 
 
-  /**
-   * ==========================================================
-   * NAMA PENGANTIN
-   * ==========================================================
-   */
+  /* ==========================================================
+     PENGANTIN
+  ========================================================== */
 
   if (namaPria) {
 
@@ -462,12 +454,6 @@ function renderInvitation(
   }
 
 
-  /**
-   * ==========================================================
-   * QUOTE
-   * ==========================================================
-   */
-
   if (quotePengantin) {
 
     quotePengantin.textContent =
@@ -476,11 +462,9 @@ function renderInvitation(
   }
 
 
-  /**
-   * ==========================================================
-   * LOKASI UTAMA
-   * ==========================================================
-   */
+  /* ==========================================================
+     LOKASI UTAMA
+  ========================================================== */
 
   if (lokasiAcara) {
 
@@ -490,11 +474,9 @@ function renderInvitation(
   }
 
 
-  /**
-   * ==========================================================
-   * AKAD
-   * ==========================================================
-   */
+  /* ==========================================================
+     AKAD
+  ========================================================== */
 
   if (akadTanggal) {
 
@@ -528,11 +510,9 @@ function renderInvitation(
   }
 
 
-  /**
-   * ==========================================================
-   * RESEPSI
-   * ==========================================================
-   */
+  /* ==========================================================
+     RESEPSI
+  ========================================================== */
 
   if (resepsiTanggal) {
 
@@ -566,13 +546,87 @@ function renderInvitation(
   }
 
 
-  /**
-   * ==========================================================
-   * DATA SELESAI
-   * ==========================================================
-   */
+  /* ==========================================================
+     GOOGLE MAPS BUTTON
+  ========================================================== */
+
+  setupMapsButton(
+    akadMapsButton,
+    mapsUrl
+  );
+
+
+  setupMapsButton(
+    resepsiMapsButton,
+    mapsUrl
+  );
+
+
+  /* ==========================================================
+     SELESAI
+  ========================================================== */
 
   hideLoading();
+
+}
+
+
+/**
+ * ============================================================
+ * SETUP GOOGLE MAPS BUTTON
+ * ============================================================
+ */
+
+function setupMapsButton(
+  button,
+  url
+) {
+
+  if (!button) {
+
+    return;
+
+  }
+
+
+  /* Jika URL tersedia */
+
+  if (
+    url &&
+    url.trim() !== ''
+  ) {
+
+    button.href =
+      url.trim();
+
+    button.target =
+      '_blank';
+
+    button.rel =
+      'noopener noreferrer';
+
+    button.classList.remove(
+      'hidden'
+    );
+
+    button.setAttribute(
+      'aria-label',
+      'Buka lokasi di Google Maps'
+    );
+
+
+  } else {
+
+    /*
+     * Jika URL kosong,
+     * tombol disembunyikan.
+     */
+
+    button.classList.add(
+      'hidden'
+    );
+
+  }
 
 }
 
@@ -685,14 +739,10 @@ if (openInvitation) {
  * ============================================================
  * DATA ACCESS
  * ============================================================
- *
- * Fungsi ini akan kita gunakan pada fitur berikutnya.
  */
 
 
-/**
- * Seluruh data
- */
+/* Seluruh data */
 
 function getInvitationData() {
 
@@ -701,9 +751,7 @@ function getInvitationData() {
 }
 
 
-/**
- * Data pengantin
- */
+/* Data pengantin */
 
 function getPengantinData() {
 
@@ -722,9 +770,7 @@ function getPengantinData() {
 }
 
 
-/**
- * Data acara
- */
+/* Data acara */
 
 function getAcaraData() {
 
