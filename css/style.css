@@ -1371,3 +1371,308 @@ a {
 
 
 }
+
+/* =========================================================
+   STEP 7
+   PREMIUM SCROLL REVEAL ANIMATION
+========================================================= */
+
+/* Elemen yang akan dianimasikan */
+.reveal {
+  opacity: 0;
+  transform: translateY(45px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+  will-change: opacity, transform;
+}
+
+
+/* Ketika elemen sudah masuk viewport */
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* Variasi dari kiri */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-45px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+  will-change: opacity, transform;
+}
+
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* Variasi dari kanan */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(45px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+  will-change: opacity, transform;
+}
+
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* Variasi scale */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+  will-change: opacity, transform;
+}
+
+
+.reveal-scale.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
+/* Delay antar elemen */
+.reveal-delay-1 {
+  transition-delay: 0.12s;
+}
+
+
+.reveal-delay-2 {
+  transition-delay: 0.24s;
+}
+
+
+.reveal-delay-3 {
+  transition-delay: 0.36s;
+}
+
+
+.reveal-delay-4 {
+  transition-delay: 0.48s;
+}
+
+
+/* =========================================================
+   HERO ANIMATION
+========================================================= */
+
+.hero-content .small-title {
+  animation:
+    heroFadeUp 1s ease 0.2s both;
+}
+
+
+.hero-content h1 {
+  animation:
+    heroFadeUp 1s ease 0.4s both;
+}
+
+
+.hero-content .date {
+  animation:
+    heroFadeUp 1s ease 0.6s both;
+}
+
+
+.hero-content .btn-primary {
+  animation:
+    heroFadeUp 1s ease 0.8s both;
+}
+
+
+@keyframes heroFadeUp {
+
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =========================================================
+   BUTTON PREMIUM
+========================================================= */
+
+.btn-primary {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+
+/* =========================================================
+   SECTION CARD PREMIUM
+========================================================= */
+
+.section-card,
+.countdown-item,
+.event-card,
+.countdown-finished {
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+
+/* Hover desktop */
+@media (hover: hover) {
+
+  .section-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+      0 18px 45px
+      rgba(0, 0, 0, 0.07);
+  }
+
+
+  .countdown-item:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+      0 18px 45px
+      rgba(0, 0, 0, 0.08);
+  }
+
+}
+
+
+/* =========================================================
+   COUNTDOWN NUMBER
+========================================================= */
+
+.countdown-number {
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+
+/* =========================================================
+   EVENT ICON
+========================================================= */
+
+.event-icon {
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+
+.event-card:hover .event-icon {
+  transform:
+    scale(1.08)
+    rotate(3deg);
+}
+
+
+/* =========================================================
+   MAPS BUTTON
+========================================================= */
+
+.maps-button {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .reveal {
+    transform:
+      translateY(30px);
+  }
+
+
+  .reveal-left {
+    transform:
+      translateX(-30px);
+  }
+
+
+  .reveal-right {
+    transform:
+      translateX(30px);
+  }
+
+
+  .reveal-scale {
+    transform:
+      scale(0.97);
+  }
+
+
+  .reveal-delay-1,
+  .reveal-delay-2,
+  .reveal-delay-3,
+  .reveal-delay-4 {
+    transition-delay: 0.08s;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+   Untuk pengguna yang mematikan animasi
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+
+  .hero-content .small-title,
+  .hero-content h1,
+  .hero-content .date,
+  .hero-content .btn-primary {
+    animation: none;
+  }
+
+}
