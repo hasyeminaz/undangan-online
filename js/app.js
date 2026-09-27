@@ -2,8 +2,19 @@
  * ============================================================
  * UNDANGAN ONLINE
  * APP.JS
- * VERSION 7
- * COUNTDOWN FIX
+ * VERSION 8
+ *
+ * V7:
+ * - API Apps Script
+ * - Data Pengantin
+ * - Data Acara
+ * - Google Maps
+ * - Countdown
+ *
+ * V8:
+ * - Premium Scroll Animation
+ * - Scroll Reveal
+ * - Stagger Animation
  * ============================================================
  */
 
@@ -143,6 +154,8 @@ let invitationData = null;
 
 let countdownInterval = null;
 
+let scrollObserver = null;
+
 
 /* ============================================================
    START
@@ -157,7 +170,7 @@ document.addEventListener(
     );
 
     console.log(
-      'UNDANGAN ONLINE - APP.JS V7'
+      'UNDANGAN ONLINE - APP.JS V8'
     );
 
     console.log(
@@ -181,6 +194,7 @@ async function loadInvitation() {
     console.log(
       'Mengambil data dari Apps Script...'
     );
+
 
     const response =
       await fetch(
@@ -247,6 +261,7 @@ async function loadInvitation() {
       'ERROR LOAD INVITATION:',
       error
     );
+
 
     showError(
       error.message
@@ -423,7 +438,7 @@ function renderInvitation(data) {
 
 
   /* ==========================================================
-     DEBUG DATA
+     DEBUG
   ========================================================== */
 
   console.log(
@@ -625,10 +640,17 @@ function renderInvitation(data) {
 
 
   /* ==========================================================
-     TAMPILKAN APP
+     HIDE LOADING
   ========================================================== */
 
   hideLoading();
+
+
+  /* ==========================================================
+     SCROLL ANIMATION
+  ========================================================== */
+
+  initScrollAnimations();
 
 }
 
@@ -713,6 +735,307 @@ function setupMapsButton(
     );
 
   }
+
+}
+
+
+/* ============================================================
+   STEP 7
+   SCROLL ANIMATION
+============================================================ */
+
+function initScrollAnimations() {
+
+  console.log(
+    '===================================='
+  );
+
+  console.log(
+    'INITIALIZE SCROLL ANIMATIONS'
+  );
+
+  console.log(
+    '===================================='
+  );
+
+
+  /*
+   * Bersihkan observer sebelumnya
+   */
+
+  if (scrollObserver) {
+
+    scrollObserver.disconnect();
+
+    scrollObserver =
+      null;
+
+  }
+
+
+  /*
+   * Ambil semua section/card
+   */
+
+  const elements =
+    document.querySelectorAll(
+      '.section-card, ' +
+      '.countdown-section, ' +
+      '.event-heading, ' +
+      '.event-card'
+    );
+
+
+  if (
+    !elements ||
+    elements.length === 0
+  ) {
+
+    console.warn(
+      'Tidak ada elemen untuk animasi.'
+    );
+
+    return;
+
+  }
+
+
+  console.log(
+    'Jumlah elemen animasi:',
+    elements.length
+  );
+
+
+  /*
+   * Tambahkan class reveal
+   */
+
+  elements.forEach(
+    function (
+      element,
+      index
+    ) {
+
+      /*
+       * Jika event card,
+       * buat animasi sedikit berbeda
+       */
+
+      if (
+        element.classList.contains(
+          'event-card'
+        )
+      ) {
+
+        /*
+         * Card pertama dari kiri
+         * Card kedua dari kanan
+         */
+
+        const eventCards =
+          document.querySelectorAll(
+            '.event-card'
+          );
+
+
+        const cardIndex =
+          Array.from(
+            eventCards
+          ).indexOf(
+            element
+          );
+
+
+        if (
+          cardIndex % 2 === 0
+        ) {
+
+          element.classList.add(
+            'reveal-left'
+          );
+
+        }
+
+        else {
+
+          element.classList.add(
+            'reveal-right'
+          );
+
+        }
+
+      }
+
+      else if (
+        element.classList.contains(
+          'countdown-section'
+        )
+      ) {
+
+        /*
+         * Countdown menggunakan scale
+         */
+
+        element.classList.add(
+          'reveal-scale'
+        );
+
+      }
+
+      else {
+
+        /*
+         * Section lainnya
+         * menggunakan fade-up
+         */
+
+        element.classList.add(
+          'reveal'
+        );
+
+      }
+
+
+      /*
+       * Delay kecil untuk variasi
+       */
+
+      if (
+        index % 4 === 1
+      ) {
+
+        element.classList.add(
+          'reveal-delay-1'
+        );
+
+      }
+
+      else if (
+        index % 4 === 2
+      ) {
+
+        element.classList.add(
+          'reveal-delay-2'
+        );
+
+      }
+
+      else if (
+        index % 4 === 3
+      ) {
+
+        element.classList.add(
+          'reveal-delay-3'
+        );
+
+      }
+
+    }
+  );
+
+
+  /*
+   * Jika browser tidak mendukung
+   * IntersectionObserver,
+   * langsung tampilkan semuanya.
+   */
+
+  if (
+    !('IntersectionObserver' in window)
+  ) {
+
+    console.warn(
+      'IntersectionObserver tidak tersedia.'
+    );
+
+
+    elements.forEach(
+      function (element) {
+
+        element.classList.add(
+          'active'
+        );
+
+      }
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+   * Buat observer
+   */
+
+  scrollObserver =
+    new IntersectionObserver(
+      function (
+        entries
+      ) {
+
+        entries.forEach(
+          function (
+            entry
+          ) {
+
+            if (
+              entry.isIntersecting
+            ) {
+
+              entry.target.classList.add(
+                'active'
+              );
+
+            }
+
+            else {
+
+              /*
+               * Hapus active ketika
+               * keluar viewport supaya
+               * animasi bisa muncul lagi
+               * saat scroll kembali.
+               */
+
+              entry.target.classList.remove(
+                'active'
+              );
+
+            }
+
+          }
+        );
+
+      },
+      {
+        threshold: 0.15,
+
+        rootMargin:
+          '0px 0px -60px 0px'
+      }
+    );
+
+
+  /*
+   * Observe semua element
+   */
+
+  elements.forEach(
+    function (element) {
+
+      scrollObserver.observe(
+        element
+      );
+
+    }
+  );
+
+
+  console.log(
+    'SCROLL ANIMATION AKTIF'
+  );
 
 }
 
@@ -907,7 +1230,7 @@ function parseIndonesianDate(
 
 
   /* ==========================================================
-     JIKA SUDAH OBJECT DATE
+     OBJECT DATE
   ========================================================== */
 
   if (
@@ -942,9 +1265,6 @@ function parseIndonesianDate(
 
   /* ==========================================================
      FORMAT ISO
-     CONTOH:
-     2027-04-02
-     2027-04-02T00:00:00.000Z
   ========================================================== */
 
   if (
@@ -967,11 +1287,13 @@ function parseIndonesianDate(
           10
         );
 
+
       const month =
         parseInt(
           isoMatch[2],
           10
         ) - 1;
+
 
       const day =
         parseInt(
@@ -993,11 +1315,7 @@ function parseIndonesianDate(
 
 
   /* ==========================================================
-     FORMAT TANGGAL INDONESIA
-     CONTOH:
-     2 April 2027
-     02 April 2027
-     2 April, 2027
+     BULAN INDONESIA
   ========================================================== */
 
   const months = {
@@ -1037,7 +1355,9 @@ function parseIndonesianDate(
   );
 
 
-  if (parts.length >= 3) {
+  if (
+    parts.length >= 3
+  ) {
 
     const day =
       parseInt(
@@ -1086,11 +1406,13 @@ function parseIndonesianDate(
 
 
   /* ==========================================================
-     FORMAT FALLBACK JAVASCRIPT
+     FALLBACK JAVASCRIPT
   ========================================================== */
 
   const fallback =
-    new Date(original);
+    new Date(
+      original
+    );
 
 
   if (
@@ -1180,7 +1502,7 @@ function createWIBDate(
 
 
   /* ==========================================================
-     VALIDASI
+     VALIDASI JAM
   ========================================================== */
 
   if (
@@ -1206,10 +1528,7 @@ function createWIBDate(
 
 
   /* ==========================================================
-     WIB = UTC + 7
-     
-     Kita buat timestamp UTC dengan
-     mengurangi 7 jam dari waktu WIB.
+     WIB UTC +7
   ========================================================== */
 
   const utcTimestamp =
@@ -1361,19 +1680,7 @@ function updateCountdown(
 
 
   /* ==========================================================
-     DEBUG
-  ========================================================== */
-
-  /*
-  console.log(
-    'COUNTDOWN DIFFERENCE:',
-    difference
-  );
-  */
-
-
-  /* ==========================================================
-     JIKA SUDAH TIBA
+     SELESAI
   ========================================================== */
 
   if (
@@ -1517,7 +1824,7 @@ function updateCountdown(
 
 
 /* ============================================================
-   FORMAT ANGKA COUNTDOWN
+   FORMAT ANGKA
 ============================================================ */
 
 function setCountdownValue(
@@ -1567,6 +1874,7 @@ function finishCountdown() {
       countdownInterval
     );
 
+
     countdownInterval =
       null;
 
@@ -1605,9 +1913,7 @@ function showCountdownError() {
 
 
   /*
-   * Jangan sembunyikan timer.
-   * Kita biarkan angka 00 tetap terlihat
-   * supaya bagian countdown tidak hilang.
+   * Timer sengaja tetap ditampilkan.
    */
 
   if (countdownTimer) {
