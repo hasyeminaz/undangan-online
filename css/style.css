@@ -1,1124 +1,1482 @@
-/* =========================================================
-   UNDANGAN ONLINE
-   STYLE.CSS
-   VERSION 2 - STEP 5
-========================================================= */
+/**
+ * ============================================================
+ * UNDANGAN ONLINE
+ * APP.JS
+ * VERSION 2 - STEP 6
+ * ============================================================
+ */
 
 
-/* =========================================================
-   RESET
-========================================================= */
+/**
+ * ============================================================
+ * KONFIGURASI API
+ * ============================================================
+ */
 
-* {
+const API_URL =
+  'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT';
 
-  margin: 0;
 
-  padding: 0;
+/**
+ * ============================================================
+ * ELEMENT HTML
+ * ============================================================
+ */
 
-  box-sizing: border-box;
 
-}
+/* Loading */
 
+const loadingScreen =
+  document.getElementById(
+    'loadingScreen'
+  );
 
-html {
 
-  scroll-behavior: smooth;
+/* Application */
 
-}
+const app =
+  document.getElementById(
+    'app'
+  );
 
 
-body {
+/* Error */
 
-  font-family:
-    Georgia,
-    'Times New Roman',
-    serif;
+const errorScreen =
+  document.getElementById(
+    'errorScreen'
+  );
 
-  background:
-    #f7f3ef;
 
-  color:
-    #333;
+const errorMessage =
+  document.getElementById(
+    'errorMessage'
+  );
 
-  overflow-x:
-    hidden;
 
-}
+/* Pengantin */
 
+const namaPengantin =
+  document.getElementById(
+    'namaPengantin'
+  );
 
-button {
 
-  font-family:
-    inherit;
+const namaPria =
+  document.getElementById(
+    'namaPria'
+  );
 
-}
 
+const namaWanita =
+  document.getElementById(
+    'namaWanita'
+  );
 
-a {
 
-  text-decoration:
-    none;
+const quotePengantin =
+  document.getElementById(
+    'quotePengantin'
+  );
 
-}
 
+/* Hero */
 
-/* =========================================================
-   UTILITY
-========================================================= */
+const tanggalAcara =
+  document.getElementById(
+    'tanggalAcara'
+  );
 
-.hidden {
 
-  display:
-    none !important;
+const lokasiAcara =
+  document.getElementById(
+    'lokasiAcara'
+  );
 
-}
 
+/* Button */
 
-/* =========================================================
-   LOADING
-========================================================= */
+const openInvitation =
+  document.getElementById(
+    'openInvitation'
+  );
 
-.loading-screen {
 
-  position:
-    fixed;
+/**
+ * ============================================================
+ * AKAD
+ * ============================================================
+ */
 
-  inset:
-    0;
+const akadTanggal =
+  document.getElementById(
+    'akadTanggal'
+  );
 
-  z-index:
-    9999;
 
-  display:
-    flex;
+const akadWaktu =
+  document.getElementById(
+    'akadWaktu'
+  );
 
-  align-items:
-    center;
 
-  justify-content:
-    center;
+const akadLokasi =
+  document.getElementById(
+    'akadLokasi'
+  );
 
-  background:
-    #f7f3ef;
 
-}
+const akadAlamat =
+  document.getElementById(
+    'akadAlamat'
+  );
 
 
-.loading-content {
+const akadMapsButton =
+  document.getElementById(
+    'akadMapsButton'
+  );
 
-  text-align:
-    center;
 
-}
+/**
+ * ============================================================
+ * RESEPSI
+ * ============================================================
+ */
 
+const resepsiTanggal =
+  document.getElementById(
+    'resepsiTanggal'
+  );
 
-.loading-content p {
 
-  margin-top:
-    15px;
+const resepsiWaktu =
+  document.getElementById(
+    'resepsiWaktu'
+  );
 
-  font-family:
-    Arial,
-    sans-serif;
 
-  font-size:
-    13px;
+const resepsiLokasi =
+  document.getElementById(
+    'resepsiLokasi'
+  );
 
-  color:
-    #777;
 
-}
+const resepsiAlamat =
+  document.getElementById(
+    'resepsiAlamat'
+  );
 
 
-.loader {
+const resepsiMapsButton =
+  document.getElementById(
+    'resepsiMapsButton'
+  );
 
-  width:
-    40px;
 
-  height:
-    40px;
+/**
+ * ============================================================
+ * COUNTDOWN
+ * ============================================================
+ */
 
-  margin:
-    auto;
+const countdownDate =
+  document.getElementById(
+    'countdownDate'
+  );
 
-  border:
-    3px solid #ddd;
 
-  border-top-color:
-    #777;
+const countdownTimer =
+  document.getElementById(
+    'countdownTimer'
+  );
 
-  border-radius:
-    50%;
 
-  animation:
-    spin 1s linear infinite;
+const countdownFinished =
+  document.getElementById(
+    'countdownFinished'
+  );
 
-}
 
+const countdownDays =
+  document.getElementById(
+    'countdownDays'
+  );
 
-@keyframes spin {
 
-  to {
+const countdownHours =
+  document.getElementById(
+    'countdownHours'
+  );
 
-    transform:
-      rotate(360deg);
+
+const countdownMinutes =
+  document.getElementById(
+    'countdownMinutes'
+  );
+
+
+const countdownSeconds =
+  document.getElementById(
+    'countdownSeconds'
+  );
+
+
+/**
+ * ============================================================
+ * DATA GLOBAL
+ * ============================================================
+ */
+
+let invitationData = null;
+
+
+/**
+ * ID interval countdown.
+ *
+ * Disimpan supaya kita bisa menghentikannya
+ * ketika waktu sudah habis.
+ */
+
+let countdownInterval = null;
+
+
+/**
+ * ============================================================
+ * START APPLICATION
+ * ============================================================
+ */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  function () {
+
+    loadInvitation();
+
+  }
+);
+
+
+/**
+ * ============================================================
+ * LOAD DATA UNDANGAN
+ * ============================================================
+ */
+
+async function loadInvitation() {
+
+  try {
+
+
+    /* --------------------------------------------------------
+       CEK URL API
+    -------------------------------------------------------- */
+
+    if (
+      !API_URL ||
+      API_URL ===
+        'GANTI_DENGAN_URL_WEB_APP_APPS_SCRIPT'
+    ) {
+
+      throw new Error(
+        'URL Apps Script belum diatur.'
+      );
+
+    }
+
+
+    /* --------------------------------------------------------
+       REQUEST API
+    -------------------------------------------------------- */
+
+    const response =
+      await fetch(
+        API_URL +
+        '?action=config'
+      );
+
+
+    /* --------------------------------------------------------
+       CEK RESPONSE
+    -------------------------------------------------------- */
+
+    if (!response.ok) {
+
+      throw new Error(
+        'Server Apps Script tidak dapat diakses.'
+      );
+
+    }
+
+
+    /* --------------------------------------------------------
+       PARSE JSON
+    -------------------------------------------------------- */
+
+    const result =
+      await response.json();
+
+
+    /* --------------------------------------------------------
+       CEK STATUS API
+    -------------------------------------------------------- */
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result &&
+        result.message
+          ? result.message
+          : 'Data undangan gagal dimuat.'
+      );
+
+    }
+
+
+    /* --------------------------------------------------------
+       SIMPAN DATA
+    -------------------------------------------------------- */
+
+    invitationData =
+      result.data || {};
+
+
+    /* --------------------------------------------------------
+       RENDER
+    -------------------------------------------------------- */
+
+    renderInvitation(
+      invitationData
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      'Gagal memuat undangan:',
+      error
+    );
+
+
+    showError(
+      error.message
+    );
 
   }
 
 }
 
 
-/* =========================================================
-   HERO
-========================================================= */
+/**
+ * ============================================================
+ * RENDER UNDANGAN
+ * ============================================================
+ */
 
-.hero {
+function renderInvitation(
+  data
+) {
 
-  position:
-    relative;
 
-  min-height:
-    100vh;
+  /**
+   * ==========================================================
+   * DATA PENGANTIN
+   * ==========================================================
+   */
 
-  display:
-    flex;
+  const pengantin =
+    data.pengantin || {};
 
-  align-items:
-    center;
 
-  justify-content:
-    center;
+  const pria =
+    pengantin.nama_pria ||
+    data.nama_pria ||
+    'Nama Pria';
 
-  text-align:
-    center;
 
-  background:
+  const wanita =
+    pengantin.nama_wanita ||
+    data.nama_wanita ||
+    'Nama Wanita';
 
-    linear-gradient(
-      rgba(0, 0, 0, 0.45),
-      rgba(0, 0, 0, 0.45)
-    ),
 
-    url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1600&q=80")
+  const quote =
+    pengantin.quote ||
+    '';
 
-    center / cover
-    no-repeat;
 
-  color:
-    white;
+  /**
+   * ==========================================================
+   * DATA ACARA
+   * ==========================================================
+   */
 
-}
+  const acara =
+    data.acara || {};
 
 
-.overlay {
+  /**
+   * ==========================================================
+   * AKAD
+   * ==========================================================
+   */
 
-  position:
-    absolute;
+  const akadDate =
+    acara.akad_tanggal ||
+    data.tanggal ||
+    '-';
 
-  inset:
-    0;
 
-  background:
-    rgba(0, 0, 0, 0.12);
+  const akadTime =
+    acara.akad_waktu ||
+    '-';
 
-}
 
+  const akadPlace =
+    acara.akad_lokasi ||
+    '-';
 
-.hero-content {
 
-  position:
-    relative;
+  const akadAddress =
+    acara.akad_alamat ||
+    '-';
 
-  z-index:
-    2;
 
-  width:
-    100%;
+  /**
+   * ==========================================================
+   * RESEPSI
+   * ==========================================================
+   */
 
-  max-width:
-    1200px;
+  const resepsiDate =
+    acara.resepsi_tanggal ||
+    '-';
 
-  padding:
-    30px;
 
-}
+  const resepsiTime =
+    acara.resepsi_waktu ||
+    '-';
 
 
-.small-title {
+  const resepsiPlace =
+    acara.resepsi_lokasi ||
+    '-';
 
-  font-family:
-    Arial,
-    sans-serif;
 
-  font-size:
-    12px;
+  const resepsiAddress =
+    acara.resepsi_alamat ||
+    '-';
 
-  letter-spacing:
-    5px;
 
-  margin-bottom:
-    25px;
+  /**
+   * ==========================================================
+   * GOOGLE MAPS
+   * ==========================================================
+   */
 
-  opacity:
-    0.9;
+  const mapsUrl =
+    acara.maps_url ||
+    '';
 
-}
 
+  /**
+   * ==========================================================
+   * HERO
+   * ==========================================================
+   */
 
-.hero h1 {
+  if (namaPengantin) {
 
-  font-size:
-    clamp(42px, 7vw, 82px);
-
-  line-height:
-    1.05;
-
-  font-weight:
-    normal;
-
-  margin-bottom:
-    22px;
-
-}
-
-
-.date {
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    15px;
-
-  margin-bottom:
-    35px;
-
-}
-
-
-/* =========================================================
-   BUTTON
-========================================================= */
-
-.btn-primary {
-
-  border:
-    none;
-
-  padding:
-    14px 30px;
-
-  border-radius:
-    30px;
-
-  background:
-    white;
-
-  color:
-    #333;
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    14px;
-
-  cursor:
-    pointer;
-
-  transition:
-    all 0.3s ease;
-
-}
-
-
-.btn-primary:hover {
-
-  transform:
-    translateY(-3px);
-
-  box-shadow:
-    0 10px 25px
-    rgba(0, 0, 0, 0.15);
-
-}
-
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.content {
-
-  padding:
-    90px 20px;
-
-}
-
-
-.container {
-
-  width:
-    100%;
-
-  max-width:
-    900px;
-
-  margin:
-    auto;
-
-}
-
-
-/* =========================================================
-   SECTION CARD
-========================================================= */
-
-.section-card {
-
-  background:
-    white;
-
-  padding:
-    55px 35px;
-
-  margin-bottom:
-    30px;
-
-  text-align:
-    center;
-
-  border-radius:
-    14px;
-
-  box-shadow:
-    0 12px 35px
-    rgba(0, 0, 0, 0.05);
-
-}
-
-
-.section-label {
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    11px;
-
-  letter-spacing:
-    4px;
-
-  color:
-    #999;
-
-  margin-bottom:
-    20px;
-
-}
-
-
-.section-card h2 {
-
-  font-size:
-    38px;
-
-  font-weight:
-    normal;
-
-}
-
-
-.and {
-
-  display:
-    block;
-
-  margin:
-    10px 0;
-
-  font-size:
-    28px;
-
-  font-style:
-    italic;
-
-}
-
-
-.quote {
-
-  max-width:
-    650px;
-
-  margin:
-    30px auto 0;
-
-  line-height:
-    1.9;
-
-  color:
-    #777;
-
-  font-size:
-    15px;
-
-}
-
-
-/* =========================================================
-   EVENT SECTION
-========================================================= */
-
-.event-section {
-
-  padding:
-    20px 0 50px;
-
-}
-
-
-.event-heading {
-
-  text-align:
-    center;
-
-  margin-bottom:
-    35px;
-
-}
-
-
-.event-heading h2 {
-
-  font-size:
-    38px;
-
-  font-weight:
-    normal;
-
-  margin-bottom:
-    18px;
-
-}
-
-
-.event-intro {
-
-  max-width:
-    600px;
-
-  margin:
-    auto;
-
-  line-height:
-    1.8;
-
-  color:
-    #777;
-
-  font-size:
-    15px;
-
-}
-
-
-/* =========================================================
-   EVENT CARD
-========================================================= */
-
-.event-card {
-
-  position:
-    relative;
-
-  background:
-    white;
-
-  padding:
-    45px 35px;
-
-  margin-bottom:
-    25px;
-
-  border-radius:
-    14px;
-
-  text-align:
-    center;
-
-  box-shadow:
-    0 12px 35px
-    rgba(0, 0, 0, 0.05);
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-
-}
-
-
-.event-card:hover {
-
-  transform:
-    translateY(-4px);
-
-  box-shadow:
-    0 18px 40px
-    rgba(0, 0, 0, 0.08);
-
-}
-
-
-.event-icon {
-
-  width:
-    50px;
-
-  height:
-    50px;
-
-  margin:
-    0 auto 20px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  border-radius:
-    50%;
-
-  background:
-    #f7f3ef;
-
-  color:
-    #777;
-
-  font-size:
-    22px;
-
-}
-
-
-.event-label {
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    10px;
-
-  letter-spacing:
-    4px;
-
-  color:
-    #999;
-
-  margin-bottom:
-    10px;
-
-}
-
-
-.event-card h3 {
-
-  font-size:
-    28px;
-
-  font-weight:
-    normal;
-
-  margin-bottom:
-    35px;
-
-}
-
-
-/* =========================================================
-   EVENT DETAIL
-========================================================= */
-
-.event-detail {
-
-  max-width:
-    600px;
-
-  margin:
-    auto;
-
-}
-
-
-.detail-item {
-
-  display:
-    flex;
-
-  align-items:
-    flex-start;
-
-  text-align:
-    left;
-
-  padding:
-    18px 0;
-
-  border-bottom:
-    1px solid #eee;
-
-}
-
-
-.detail-item:last-child {
-
-  border-bottom:
-    none;
-
-}
-
-
-.detail-icon {
-
-  width:
-    45px;
-
-  min-width:
-    45px;
-
-  height:
-    45px;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  margin-right:
-    15px;
-
-  border-radius:
-    50%;
-
-  background:
-    #f7f3ef;
-
-  font-size:
-    17px;
-
-}
-
-
-.detail-item strong {
-
-  display:
-    block;
-
-  margin-bottom:
-    5px;
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    12px;
-
-  color:
-    #999;
-
-}
-
-
-.detail-item p {
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    14px;
-
-  line-height:
-    1.6;
-
-  color:
-    #444;
-
-}
-
-
-.detail-item small {
-
-  display:
-    block;
-
-  margin-top:
-    3px;
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    13px;
-
-  line-height:
-    1.6;
-
-  color:
-    #777;
-
-}
-
-
-/* =========================================================
-   GOOGLE MAPS BUTTON
-========================================================= */
-
-.maps-button {
-
-  display:
-    inline-flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  gap:
-    8px;
-
-  margin-top:
-    30px;
-
-  padding:
-    12px 25px;
-
-  border:
-    1px solid #ddd;
-
-  border-radius:
-    30px;
-
-  background:
-    #f7f3ef;
-
-  color:
-    #555;
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  font-size:
-    13px;
-
-  transition:
-    all 0.3s ease;
-
-}
-
-
-.maps-button:hover {
-
-  background:
-    #333;
-
-  border-color:
-    #333;
-
-  color:
-    white;
-
-  transform:
-    translateY(-2px);
-
-  box-shadow:
-    0 8px 20px
-    rgba(0, 0, 0, 0.12);
-
-}
-
-
-/* =========================================================
-   THANK YOU
-========================================================= */
-
-.thank-you-card {
-
-  margin-top:
-    20px;
-
-}
-
-
-.section-card h3 {
-
-  font-size:
-    28px;
-
-  font-weight:
-    normal;
-
-  margin-bottom:
-    20px;
-
-}
-
-
-.section-card p {
-
-  line-height:
-    1.8;
-
-  color:
-    #666;
-
-}
-
-
-/* =========================================================
-   ERROR
-========================================================= */
-
-.error-screen {
-
-  position:
-    fixed;
-
-  inset:
-    0;
-
-  z-index:
-    9999;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  padding:
-    20px;
-
-  background:
-    #f7f3ef;
-
-}
-
-
-.error-box {
-
-  max-width:
-    450px;
-
-  padding:
-    40px;
-
-  background:
-    white;
-
-  text-align:
-    center;
-
-  border-radius:
-    12px;
-
-  box-shadow:
-    0 10px 30px
-    rgba(0, 0, 0, 0.08);
-
-}
-
-
-.error-box h2 {
-
-  margin-bottom:
-    15px;
-
-  font-weight:
-    normal;
-
-}
-
-
-.error-box p {
-
-  margin-bottom:
-    25px;
-
-  color:
-    #777;
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-
-  .hero {
-
-    min-height:
-      100svh;
+    namaPengantin.textContent =
+      pria +
+      ' & ' +
+      wanita;
 
   }
 
 
-  .hero-content {
+  if (tanggalAcara) {
 
-    padding:
-      25px 18px;
-
-  }
-
-
-  .small-title {
-
-    font-size:
-      10px;
-
-    letter-spacing:
-      4px;
-
-    margin-bottom:
-      20px;
+    tanggalAcara.textContent =
+      akadDate;
 
   }
 
 
-  .hero h1 {
+  /**
+   * ==========================================================
+   * PENGANTIN
+   * ==========================================================
+   */
 
-    font-size:
-      46px;
+  if (namaPria) {
 
-    line-height:
-      1.05;
-
-  }
-
-
-  .date {
-
-    font-size:
-      14px;
+    namaPria.textContent =
+      pria;
 
   }
 
 
-  .content {
+  if (namaWanita) {
 
-    padding:
-      60px 15px;
-
-  }
-
-
-  .section-card {
-
-    padding:
-      40px 20px;
-
-    border-radius:
-      12px;
+    namaWanita.textContent =
+      wanita;
 
   }
 
 
-  .section-card h2 {
+  if (quotePengantin) {
 
-    font-size:
-      30px;
-
-  }
-
-
-  .event-section {
-
-    padding:
-      10px 0 35px;
+    quotePengantin.textContent =
+      quote;
 
   }
 
 
-  .event-heading h2 {
+  /**
+   * ==========================================================
+   * LOKASI UTAMA
+   * ==========================================================
+   */
 
-    font-size:
-      30px;
+  if (lokasiAcara) {
 
-  }
-
-
-  .event-card {
-
-    padding:
-      35px 20px;
+    lokasiAcara.textContent =
+      akadAddress;
 
   }
 
 
-  .event-card h3 {
+  /**
+   * ==========================================================
+   * AKAD
+   * ==========================================================
+   */
 
-    font-size:
-      25px;
+  if (akadTanggal) {
 
-  }
-
-
-  .detail-item {
-
-    padding:
-      15px 0;
+    akadTanggal.textContent =
+      akadDate;
 
   }
 
 
-  .detail-icon {
+  if (akadWaktu) {
 
-    width:
-      40px;
-
-    min-width:
-      40px;
-
-    height:
-      40px;
-
-    margin-right:
-      12px;
+    akadWaktu.textContent =
+      akadTime;
 
   }
 
 
-  .maps-button {
+  if (akadLokasi) {
 
-    width:
-      100%;
-
-    margin-top:
-      25px;
+    akadLokasi.textContent =
+      akadPlace;
 
   }
 
+
+  if (akadAlamat) {
+
+    akadAlamat.textContent =
+      akadAddress;
+
+  }
+
+
+  /**
+   * ==========================================================
+   * RESEPSI
+   * ==========================================================
+   */
+
+  if (resepsiTanggal) {
+
+    resepsiTanggal.textContent =
+      resepsiDate;
+
+  }
+
+
+  if (resepsiWaktu) {
+
+    resepsiWaktu.textContent =
+      resepsiTime;
+
+  }
+
+
+  if (resepsiLokasi) {
+
+    resepsiLokasi.textContent =
+      resepsiPlace;
+
+  }
+
+
+  if (resepsiAlamat) {
+
+    resepsiAlamat.textContent =
+      resepsiAddress;
+
+  }
+
+
+  /**
+   * ==========================================================
+   * GOOGLE MAPS BUTTON
+   * ==========================================================
+   */
+
+  setupMapsButton(
+    akadMapsButton,
+    mapsUrl
+  );
+
+
+  setupMapsButton(
+    resepsiMapsButton,
+    mapsUrl
+  );
+
+
+  /**
+   * ==========================================================
+   * COUNTDOWN
+   * ==========================================================
+   */
+
+  startCountdown(
+    akadDate,
+    akadTime
+  );
+
+
+  /**
+   * ==========================================================
+   * SELESAI
+   * ==========================================================
+   */
+
+  hideLoading();
+
+}
+
+
+/**
+ * ============================================================
+ * GOOGLE MAPS BUTTON
+ * ============================================================
+ */
+
+function setupMapsButton(
+  button,
+  url
+) {
+
+  if (!button) {
+
+    return;
+
+  }
+
+
+  if (
+    url &&
+    url.trim() !== ''
+  ) {
+
+    button.href =
+      url.trim();
+
+    button.target =
+      '_blank';
+
+    button.rel =
+      'noopener noreferrer';
+
+    button.classList.remove(
+      'hidden'
+    );
+
+
+    button.setAttribute(
+      'aria-label',
+      'Buka lokasi di Google Maps'
+    );
+
+
+  } else {
+
+    button.classList.add(
+      'hidden'
+    );
+
+  }
+
+}
+
+
+/**
+ * ============================================================
+ * COUNTDOWN
+ * ============================================================
+ *
+ * Countdown menggunakan:
+ *
+ * akad_tanggal
+ * akad_waktu
+ *
+ * dari Google Sheets.
+ *
+ * Contoh:
+ *
+ * 2 April 2026
+ * 08:00 WIB
+ *
+ * ============================================================
+ */
+
+function startCountdown(
+  dateString,
+  timeString
+) {
+
+
+  /**
+   * Bersihkan interval sebelumnya
+   */
+
+  if (countdownInterval) {
+
+    clearInterval(
+      countdownInterval
+    );
+
+  }
+
+
+  /**
+   * Tampilkan tanggal countdown
+   */
+
+  if (countdownDate) {
+
+    if (
+      dateString &&
+      dateString !== '-'
+    ) {
+
+      countdownDate.textContent =
+        dateString +
+        (
+          timeString &&
+          timeString !== '-'
+            ? ' • ' + timeString
+            : ''
+        );
+
+    } else {
+
+      countdownDate.textContent =
+        '-';
+
+    }
+
+  }
+
+
+  /**
+   * Konversi tanggal ke Date
+   */
+
+  const targetDate =
+    parseIndonesianDate(
+      dateString,
+      timeString
+    );
+
+
+  /**
+   * Jika tanggal tidak valid
+   */
+
+  if (!targetDate) {
+
+    showCountdownError();
+
+    return;
+
+  }
+
+
+  /**
+   * Jalankan countdown pertama kali
+   */
+
+  updateCountdown(
+    targetDate
+  );
+
+
+  /**
+   * Update setiap 1 detik
+   */
+
+  countdownInterval =
+    setInterval(
+      function () {
+
+        updateCountdown(
+          targetDate
+        );
+
+      },
+      1000
+    );
+
+}
+
+
+/**
+ * ============================================================
+ * PARSE TANGGAL INDONESIA
+ * ============================================================
+ *
+ * Mendukung:
+ *
+ * 2 April 2026
+ * 02 April 2026
+ * 2 April 2026
+ *
+ * ============================================================
+ */
+
+function parseIndonesianDate(
+  dateString,
+  timeString
+) {
+
+  if (
+    !dateString ||
+    dateString === '-'
+  ) {
+
+    return null;
+
+  }
+
+
+  const months = {
+
+    januari: 0,
+    februari: 1,
+    maret: 2,
+    april: 3,
+    mei: 4,
+    juni: 5,
+    juli: 6,
+    agustus: 7,
+    september: 8,
+    oktober: 9,
+    november: 10,
+    desember: 11
+
+  };
+
+
+  const cleanDate =
+    String(
+      dateString
+    )
+      .trim()
+      .toLowerCase()
+      .replace(
+        /,/g,
+        ''
+      );
+
+
+  const parts =
+    cleanDate.split(
+      /\s+/
+    );
+
+
+  if (
+    parts.length < 3
+  ) {
+
+    return null;
+
+  }
+
+
+  const day =
+    parseInt(
+      parts[0],
+      10
+    );
+
+
+  const month =
+    months[
+      parts[1]
+    ];
+
+
+  const year =
+    parseInt(
+      parts[2],
+      10
+    );
+
+
+  if (
+    isNaN(day) ||
+    month === undefined ||
+    isNaN(year)
+  ) {
+
+    return null;
+
+  }
+
+
+  /**
+   * Default waktu
+   */
+
+  let hours = 0;
+
+  let minutes = 0;
+
+  let seconds = 0;
+
+
+  /**
+   * Ambil waktu dari:
+   *
+   * 08:00 WIB
+   * 13:00 WIB
+   */
+
+  if (
+    timeString &&
+    timeString !== '-'
+  ) {
+
+    const timeMatch =
+      String(
+        timeString
+      ).match(
+        /(\d{1,2}):(\d{2})/
+      );
+
+
+    if (timeMatch) {
+
+      hours =
+        parseInt(
+          timeMatch[1],
+          10
+        );
+
+
+      minutes =
+        parseInt(
+          timeMatch[2],
+          10
+        );
+
+    }
+
+  }
+
+
+  /**
+   * Indonesia WIB = UTC+7
+   *
+   * Kita buat timestamp UTC
+   * agar countdown konsisten.
+   */
+
+  const utcTime =
+    Date.UTC(
+      year,
+      month,
+      day,
+      hours - 7,
+      minutes,
+      seconds
+    );
+
+
+  return new Date(
+    utcTime
+  );
+
+}
+
+
+/**
+ * ============================================================
+ * UPDATE COUNTDOWN
+ * ============================================================
+ */
+
+function updateCountdown(
+  targetDate
+) {
+
+  const now =
+    new Date();
+
+
+  const difference =
+    targetDate.getTime() -
+    now.getTime();
+
+
+  /**
+   * Jika waktu sudah tiba
+   * atau sudah lewat.
+   */
+
+  if (
+    difference <= 0
+  ) {
+
+    finishCountdown();
+
+    return;
+
+  }
+
+
+  /**
+   * Hitung hari
+   */
+
+  const days =
+    Math.floor(
+      difference /
+      (
+        1000 *
+        60 *
+        60 *
+        24
+      )
+    );
+
+
+  /**
+   * Hitung jam
+   */
+
+  const hours =
+    Math.floor(
+      (
+        difference %
+        (
+          1000 *
+          60 *
+          60 *
+          24
+        )
+      ) /
+      (
+        1000 *
+        60 *
+        60
+      )
+    );
+
+
+  /**
+   * Hitung menit
+   */
+
+  const minutes =
+    Math.floor(
+      (
+        difference %
+        (
+          1000 *
+          60 *
+          60
+        )
+      ) /
+      (
+        1000 *
+        60
+      )
+    );
+
+
+  /**
+   * Hitung detik
+   */
+
+  const seconds =
+    Math.floor(
+      (
+        difference %
+        (
+          1000 *
+          60
+        )
+      ) /
+      1000
+    );
+
+
+  /**
+   * Tampilkan
+   */
+
+  setCountdownValue(
+    countdownDays,
+    days
+  );
+
+
+  setCountdownValue(
+    countdownHours,
+    hours
+  );
+
+
+  setCountdownValue(
+    countdownMinutes,
+    minutes
+  );
+
+
+  setCountdownValue(
+    countdownSeconds,
+    seconds
+  );
+
+
+  /**
+   * Pastikan timer terlihat
+   */
+
+  if (countdownTimer) {
+
+    countdownTimer.classList.remove(
+      'hidden'
+    );
+
+  }
+
+
+  if (countdownFinished) {
+
+    countdownFinished.classList.add(
+      'hidden'
+    );
+
+  }
+
+}
+
+
+/**
+ * ============================================================
+ * SET COUNTDOWN VALUE
+ * ============================================================
+ */
+
+function setCountdownValue(
+  element,
+  value
+) {
+
+  if (!element) {
+
+    return;
+
+  }
+
+
+  element.textContent =
+    String(
+      value
+    ).padStart(
+      2,
+      '0'
+    );
+
+}
+
+
+/**
+ * ============================================================
+ * COUNTDOWN SELESAI
+ * ============================================================
+ */
+
+function finishCountdown() {
+
+  /**
+   * Hentikan interval
+   */
+
+  if (countdownInterval) {
+
+    clearInterval(
+      countdownInterval
+    );
+
+    countdownInterval =
+      null;
+
+  }
+
+
+  /**
+   * Sembunyikan angka countdown
+   */
+
+  if (countdownTimer) {
+
+    countdownTimer.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  /**
+   * Tampilkan pesan
+   */
+
+  if (countdownFinished) {
+
+    countdownFinished.classList.remove(
+      'hidden'
+    );
+
+  }
+
+}
+
+
+/**
+ * ============================================================
+ * COUNTDOWN ERROR
+ * ============================================================
+ */
+
+function showCountdownError() {
+
+  if (countdownTimer) {
+
+    countdownTimer.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  if (countdownFinished) {
+
+    countdownFinished.classList.remove(
+      'hidden'
+    );
+
+
+    const title =
+      countdownFinished.querySelector(
+        'h3'
+      );
+
+
+    const text =
+      countdownFinished.querySelector(
+        'p'
+      );
+
+
+    if (title) {
+
+      title.textContent =
+        'Tanggal Belum Diatur';
+
+    }
+
+
+    if (text) {
+
+      text.textContent =
+        'Silakan periksa tanggal acara pada Spreadsheet.';
+
+    }
+
+  }
+
+}
+
+
+/**
+ * ============================================================
+ * HIDE LOADING
+ * ============================================================
+ */
+
+function hideLoading() {
+
+  if (loadingScreen) {
+
+    loadingScreen.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  if (app) {
+
+    app.classList.remove(
+      'hidden'
+    );
+
+  }
+
+}
+
+
+/**
+ * ============================================================
+ * SHOW ERROR
+ * ============================================================
+ */
+
+function showError(
+  message
+) {
+
+  if (loadingScreen) {
+
+    loadingScreen.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  if (app) {
+
+    app.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  if (errorMessage) {
+
+    errorMessage.textContent =
+      message ||
+      'Terjadi kesalahan.';
+
+  }
+
+
+  if (errorScreen) {
+
+    errorScreen.classList.remove(
+      'hidden'
+    );
+
+  }
+
+}
+
+
+/**
+ * ============================================================
+ * BUTTON BUKA UNDANGAN
+ * ============================================================
+ */
+
+if (openInvitation) {
+
+  openInvitation.addEventListener(
+    'click',
+    function () {
+
+      window.scrollTo({
+
+        top:
+          window.innerHeight,
+
+        behavior:
+          'smooth'
+
+      });
+
+    }
+  );
+
+}
+
+
+/**
+ * ============================================================
+ * DATA ACCESS
+ * ============================================================
+ */
+
+
+/* Seluruh data */
+
+function getInvitationData() {
+
+  return invitationData;
+
+}
+
+
+/* Data pengantin */
+
+function getPengantinData() {
+
+  if (!invitationData) {
+
+    return {};
+
+  }
+
+
+  return (
+    invitationData.pengantin ||
+    {}
+  );
+
+}
+
+
+/* Data acara */
+
+function getAcaraData() {
+
+  if (!invitationData) {
+
+    return {};
+
+  }
+
+
+  return (
+    invitationData.acara ||
+    {}
+  );
 
 }
