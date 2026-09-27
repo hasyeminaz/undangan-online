@@ -2,19 +2,15 @@
  * ============================================================
  * UNDANGAN ONLINE
  * APP.JS
- * VERSION 8
+ * VERSION 8.1
  *
- * V7:
- * - API Apps Script
+ * FITUR:
+ * - Apps Script API
  * - Data Pengantin
  * - Data Acara
  * - Google Maps
- * - Countdown
- *
- * V8:
- * - Premium Scroll Animation
- * - Scroll Reveal
- * - Stagger Animation
+ * - Countdown 2 April 2027
+ * - Elegant Subtle Scroll Reveal
  * ============================================================
  */
 
@@ -170,7 +166,7 @@ document.addEventListener(
     );
 
     console.log(
-      'UNDANGAN ONLINE - APP.JS V8'
+      'UNDANGAN ONLINE - APP.JS V8.1'
     );
 
     console.log(
@@ -438,41 +434,6 @@ function renderInvitation(data) {
 
 
   /* ==========================================================
-     DEBUG
-  ========================================================== */
-
-  console.log(
-    'NAMA PRIA:',
-    pria
-  );
-
-  console.log(
-    'NAMA WANITA:',
-    wanita
-  );
-
-  console.log(
-    'AKAD TANGGAL:',
-    akadDate
-  );
-
-  console.log(
-    'AKAD WAKTU:',
-    akadTime
-  );
-
-  console.log(
-    'RESEPSI TANGGAL:',
-    resepsiDate
-  );
-
-  console.log(
-    'RESEPSI WAKTU:',
-    resepsiTime
-  );
-
-
-  /* ==========================================================
      HERO
   ========================================================== */
 
@@ -601,7 +562,7 @@ function renderInvitation(data) {
 
 
   /* ==========================================================
-     MAPS
+     GOOGLE MAPS
   ========================================================== */
 
   setupMapsButton(
@@ -620,19 +581,6 @@ function renderInvitation(data) {
      COUNTDOWN
   ========================================================== */
 
-  console.log(
-    '===================================='
-  );
-
-  console.log(
-    'MEMULAI COUNTDOWN'
-  );
-
-  console.log(
-    '===================================='
-  );
-
-
   startCountdown(
     akadDate,
     akadTime
@@ -640,14 +588,14 @@ function renderInvitation(data) {
 
 
   /* ==========================================================
-     HIDE LOADING
+     TAMPILKAN APP
   ========================================================== */
 
   hideLoading();
 
 
   /* ==========================================================
-     SCROLL ANIMATION
+     ELEGANT SCROLL REVEAL
   ========================================================== */
 
   initScrollAnimations();
@@ -740,27 +688,18 @@ function setupMapsButton(
 
 
 /* ============================================================
-   STEP 7
-   SCROLL ANIMATION
+   ELEGANT SCROLL ANIMATION
 ============================================================ */
 
 function initScrollAnimations() {
 
   console.log(
-    '===================================='
-  );
-
-  console.log(
-    'INITIALIZE SCROLL ANIMATIONS'
-  );
-
-  console.log(
-    '===================================='
+    'Menyiapkan elegant scroll animation...'
   );
 
 
   /*
-   * Bersihkan observer sebelumnya
+   * Bersihkan observer lama
    */
 
   if (scrollObserver) {
@@ -774,7 +713,8 @@ function initScrollAnimations() {
 
 
   /*
-   * Ambil semua section/card
+   * Ambil bagian yang ingin diberi
+   * efek fade sangat halus
    */
 
   const elements =
@@ -791,163 +731,79 @@ function initScrollAnimations() {
     elements.length === 0
   ) {
 
-    console.warn(
-      'Tidak ada elemen untuk animasi.'
-    );
-
     return;
 
   }
 
 
-  console.log(
-    'Jumlah elemen animasi:',
-    elements.length
-  );
-
-
   /*
-   * Tambahkan class reveal
+   * Semua hanya menggunakan
+   * class .reveal
+   *
+   * Tidak ada:
+   * - slide kiri
+   * - slide kanan
+   * - zoom
+   * - scale
    */
 
   elements.forEach(
-    function (
-      element,
-      index
-    ) {
+    function (element) {
 
       /*
-       * Jika event card,
-       * buat animasi sedikit berbeda
+       * Hapus class animasi versi
+       * sebelumnya jika masih ada
        */
 
-      if (
-        element.classList.contains(
-          'event-card'
-        )
-      ) {
+      element.classList.remove(
+        'reveal-left'
+      );
 
-        /*
-         * Card pertama dari kiri
-         * Card kedua dari kanan
-         */
+      element.classList.remove(
+        'reveal-right'
+      );
 
-        const eventCards =
-          document.querySelectorAll(
-            '.event-card'
-          );
+      element.classList.remove(
+        'reveal-scale'
+      );
 
+      element.classList.remove(
+        'reveal-delay-1'
+      );
 
-        const cardIndex =
-          Array.from(
-            eventCards
-          ).indexOf(
-            element
-          );
+      element.classList.remove(
+        'reveal-delay-2'
+      );
 
+      element.classList.remove(
+        'reveal-delay-3'
+      );
 
-        if (
-          cardIndex % 2 === 0
-        ) {
-
-          element.classList.add(
-            'reveal-left'
-          );
-
-        }
-
-        else {
-
-          element.classList.add(
-            'reveal-right'
-          );
-
-        }
-
-      }
-
-      else if (
-        element.classList.contains(
-          'countdown-section'
-        )
-      ) {
-
-        /*
-         * Countdown menggunakan scale
-         */
-
-        element.classList.add(
-          'reveal-scale'
-        );
-
-      }
-
-      else {
-
-        /*
-         * Section lainnya
-         * menggunakan fade-up
-         */
-
-        element.classList.add(
-          'reveal'
-        );
-
-      }
+      element.classList.remove(
+        'reveal-delay-4'
+      );
 
 
       /*
-       * Delay kecil untuk variasi
+       * Gunakan hanya reveal
        */
 
-      if (
-        index % 4 === 1
-      ) {
-
-        element.classList.add(
-          'reveal-delay-1'
-        );
-
-      }
-
-      else if (
-        index % 4 === 2
-      ) {
-
-        element.classList.add(
-          'reveal-delay-2'
-        );
-
-      }
-
-      else if (
-        index % 4 === 3
-      ) {
-
-        element.classList.add(
-          'reveal-delay-3'
-        );
-
-      }
+      element.classList.add(
+        'reveal'
+      );
 
     }
   );
 
 
   /*
-   * Jika browser tidak mendukung
-   * IntersectionObserver,
-   * langsung tampilkan semuanya.
+   * Fallback jika browser tidak
+   * mendukung IntersectionObserver
    */
 
   if (
     !('IntersectionObserver' in window)
   ) {
-
-    console.warn(
-      'IntersectionObserver tidak tersedia.'
-    );
-
 
     elements.forEach(
       function (element) {
@@ -959,26 +815,21 @@ function initScrollAnimations() {
       }
     );
 
-
     return;
 
   }
 
 
   /*
-   * Buat observer
+   * Observer
    */
 
   scrollObserver =
     new IntersectionObserver(
-      function (
-        entries
-      ) {
+      function (entries) {
 
         entries.forEach(
-          function (
-            entry
-          ) {
+          function (entry) {
 
             if (
               entry.isIntersecting
@@ -992,13 +843,6 @@ function initScrollAnimations() {
 
             else {
 
-              /*
-               * Hapus active ketika
-               * keluar viewport supaya
-               * animasi bisa muncul lagi
-               * saat scroll kembali.
-               */
-
               entry.target.classList.remove(
                 'active'
               );
@@ -1010,16 +854,16 @@ function initScrollAnimations() {
 
       },
       {
-        threshold: 0.15,
+        threshold: 0.12,
 
         rootMargin:
-          '0px 0px -60px 0px'
+          '0px 0px -40px 0px'
       }
     );
 
 
   /*
-   * Observe semua element
+   * Mulai observasi
    */
 
   elements.forEach(
@@ -1034,7 +878,7 @@ function initScrollAnimations() {
 
 
   console.log(
-    'SCROLL ANIMATION AKTIF'
+    'Elegant scroll animation aktif.'
   );
 
 }
@@ -1049,29 +893,6 @@ function startCountdown(
   timeString
 ) {
 
-  console.log(
-    '------------------------------------'
-  );
-
-  console.log(
-    'START COUNTDOWN'
-  );
-
-  console.log(
-    'Tanggal:',
-    dateString
-  );
-
-  console.log(
-    'Waktu:',
-    timeString
-  );
-
-
-  /* ==========================================================
-     CLEAR INTERVAL LAMA
-  ========================================================== */
-
   if (countdownInterval) {
 
     clearInterval(
@@ -1083,10 +904,6 @@ function startCountdown(
 
   }
 
-
-  /* ==========================================================
-     TAMPILKAN TANGGAL COUNTDOWN
-  ========================================================== */
 
   if (countdownDate) {
 
@@ -1116,10 +933,6 @@ function startCountdown(
   }
 
 
-  /* ==========================================================
-     PARSE TARGET DATE
-  ========================================================== */
-
   const targetDate =
     parseIndonesianDate(
       dateString,
@@ -1135,27 +948,12 @@ function startCountdown(
 
   if (!targetDate) {
 
-    console.error(
-      'Tanggal countdown tidak dapat dibaca.'
-    );
-
-
     showCountdownError();
 
     return;
 
   }
 
-
-  console.log(
-    'TARGET TIMESTAMP:',
-    targetDate.getTime()
-  );
-
-
-  /* ==========================================================
-     TAMPILKAN TIMER
-  ========================================================== */
 
   if (countdownTimer) {
 
@@ -1175,18 +973,10 @@ function startCountdown(
   }
 
 
-  /* ==========================================================
-     UPDATE PERTAMA
-  ========================================================== */
-
   updateCountdown(
     targetDate
   );
 
-
-  /* ==========================================================
-     UPDATE SETIAP 1 DETIK
-  ========================================================== */
 
   countdownInterval =
     setInterval(
@@ -1199,11 +989,6 @@ function startCountdown(
       },
       1000
     );
-
-
-  console.log(
-    'COUNTDOWN INTERVAL AKTIF'
-  );
 
 }
 
@@ -1229,10 +1014,6 @@ function parseIndonesianDate(
   }
 
 
-  /* ==========================================================
-     OBJECT DATE
-  ========================================================== */
-
   if (
     dateString instanceof Date
   ) {
@@ -1257,15 +1038,10 @@ function parseIndonesianDate(
     String(dateString).trim();
 
 
-  console.log(
-    'PARSE DATE:',
-    original
-  );
-
-
-  /* ==========================================================
-     FORMAT ISO
-  ========================================================== */
+  /*
+   * ISO:
+   * 2027-04-02
+   */
 
   if (
     /^\d{4}-\d{2}-\d{2}/.test(
@@ -1314,9 +1090,9 @@ function parseIndonesianDate(
   }
 
 
-  /* ==========================================================
-     BULAN INDONESIA
-  ========================================================== */
+  /*
+   * Bahasa Indonesia
+   */
 
   const months = {
 
@@ -1349,12 +1125,6 @@ function parseIndonesianDate(
     cleanDate.split(' ');
 
 
-  console.log(
-    'DATE PARTS:',
-    parts
-  );
-
-
   if (
     parts.length >= 3
   ) {
@@ -1385,14 +1155,6 @@ function parseIndonesianDate(
       !isNaN(year)
     ) {
 
-      console.log(
-        'PARSED:',
-        day,
-        month,
-        year
-      );
-
-
       return createWIBDate(
         year,
         month,
@@ -1405,9 +1167,9 @@ function parseIndonesianDate(
   }
 
 
-  /* ==========================================================
-     FALLBACK JAVASCRIPT
-  ========================================================== */
+  /*
+   * Fallback
+   */
 
   const fallback =
     new Date(
@@ -1452,24 +1214,17 @@ function createWIBDate(
   let seconds = 0;
 
 
-  /* ==========================================================
-     PARSE JAM
-  ========================================================== */
-
   if (
     timeString &&
     String(timeString).trim() !== '' &&
     String(timeString).trim() !== '-'
   ) {
 
-    const timeText =
-      String(timeString).trim();
-
-
     const timeMatch =
-      timeText.match(
-        /(\d{1,2}):(\d{2})(?::(\d{2}))?/
-      );
+      String(timeString)
+        .match(
+          /(\d{1,2}):(\d{2})(?::(\d{2}))?/
+        );
 
 
     if (timeMatch) {
@@ -1501,10 +1256,6 @@ function createWIBDate(
   }
 
 
-  /* ==========================================================
-     VALIDASI JAM
-  ========================================================== */
-
   if (
     hours < 0 ||
     hours > 23 ||
@@ -1514,22 +1265,14 @@ function createWIBDate(
     seconds > 59
   ) {
 
-    console.error(
-      'Jam tidak valid:',
-      hours,
-      minutes,
-      seconds
-    );
-
-
     return null;
 
   }
 
 
-  /* ==========================================================
-     WIB UTC +7
-  ========================================================== */
+  /*
+   * WIB = UTC + 7
+   */
 
   const utcTimestamp =
     Date.UTC(
@@ -1679,10 +1422,6 @@ function updateCountdown(
     now.getTime();
 
 
-  /* ==========================================================
-     SELESAI
-  ========================================================== */
-
   if (
     difference <= 0
   ) {
@@ -1693,10 +1432,6 @@ function updateCountdown(
 
   }
 
-
-  /* ==========================================================
-     HARI
-  ========================================================== */
 
   const days =
     Math.floor(
@@ -1709,10 +1444,6 @@ function updateCountdown(
       )
     );
 
-
-  /* ==========================================================
-     JAM
-  ========================================================== */
 
   const hours =
     Math.floor(
@@ -1733,10 +1464,6 @@ function updateCountdown(
     );
 
 
-  /* ==========================================================
-     MENIT
-  ========================================================== */
-
   const minutes =
     Math.floor(
       (
@@ -1754,10 +1481,6 @@ function updateCountdown(
     );
 
 
-  /* ==========================================================
-     DETIK
-  ========================================================== */
-
   const seconds =
     Math.floor(
       (
@@ -1770,10 +1493,6 @@ function updateCountdown(
       1000
     );
 
-
-  /* ==========================================================
-     UPDATE HTML
-  ========================================================== */
 
   setCountdownValue(
     countdownDays,
@@ -1799,10 +1518,6 @@ function updateCountdown(
   );
 
 
-  /* ==========================================================
-     PASTIKAN TIMER TAMPIL
-  ========================================================== */
-
   if (countdownTimer) {
 
     countdownTimer.classList.remove(
@@ -1824,7 +1539,7 @@ function updateCountdown(
 
 
 /* ============================================================
-   FORMAT ANGKA
+   FORMAT COUNTDOWN
 ============================================================ */
 
 function setCountdownValue(
@@ -1833,10 +1548,6 @@ function setCountdownValue(
 ) {
 
   if (!element) {
-
-    console.warn(
-      'Element countdown tidak ditemukan.'
-    );
 
     return;
 
@@ -1858,15 +1569,10 @@ function setCountdownValue(
 
 
 /* ============================================================
-   COUNTDOWN SELESAI
+   COUNTDOWN FINISHED
 ============================================================ */
 
 function finishCountdown() {
-
-  console.log(
-    'COUNTDOWN SELESAI'
-  );
-
 
   if (countdownInterval) {
 
@@ -1907,13 +1613,8 @@ function finishCountdown() {
 
 function showCountdownError() {
 
-  console.error(
-    'COUNTDOWN ERROR'
-  );
-
-
   /*
-   * Timer sengaja tetap ditampilkan.
+   * Jangan sembunyikan timer.
    */
 
   if (countdownTimer) {
@@ -2001,12 +1702,6 @@ function hideLoading() {
 function showError(
   message
 ) {
-
-  console.error(
-    'SHOW ERROR:',
-    message
-  );
-
 
   if (loadingScreen) {
 
