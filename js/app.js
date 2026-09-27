@@ -2,9 +2,15 @@
  * ============================================================
  * UNDANGAN ONLINE
  * APP.JS
- * STEP 6 - COUNTDOWN
+ * VERSION 7
+ * COUNTDOWN FIX
  * ============================================================
  */
+
+
+/* ============================================================
+   API APPS SCRIPT
+============================================================ */
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbwHwdmCvqNbqUd_X5h8n4XwwP7LCSXhFs_Rp_rBH0veEQdSz0VVi44-jID3v4iq5MBltQ/exec';
@@ -14,41 +20,119 @@ const API_URL =
    ELEMENT
 ============================================================ */
 
-const loadingScreen = document.getElementById('loadingScreen');
-const app = document.getElementById('app');
-const errorScreen = document.getElementById('errorScreen');
-const errorMessage = document.getElementById('errorMessage');
+const loadingScreen =
+  document.getElementById('loadingScreen');
 
-const namaPengantin = document.getElementById('namaPengantin');
-const namaPria = document.getElementById('namaPria');
-const namaWanita = document.getElementById('namaWanita');
-const quotePengantin = document.getElementById('quotePengantin');
+const app =
+  document.getElementById('app');
 
-const tanggalAcara = document.getElementById('tanggalAcara');
-const lokasiAcara = document.getElementById('lokasiAcara');
+const errorScreen =
+  document.getElementById('errorScreen');
 
-const akadTanggal = document.getElementById('akadTanggal');
-const akadWaktu = document.getElementById('akadWaktu');
-const akadLokasi = document.getElementById('akadLokasi');
-const akadAlamat = document.getElementById('akadAlamat');
-const akadMapsButton = document.getElementById('akadMapsButton');
+const errorMessage =
+  document.getElementById('errorMessage');
 
-const resepsiTanggal = document.getElementById('resepsiTanggal');
-const resepsiWaktu = document.getElementById('resepsiWaktu');
-const resepsiLokasi = document.getElementById('resepsiLokasi');
-const resepsiAlamat = document.getElementById('resepsiAlamat');
-const resepsiMapsButton = document.getElementById('resepsiMapsButton');
 
-const countdownDate = document.getElementById('countdownDate');
-const countdownTimer = document.getElementById('countdownTimer');
-const countdownFinished = document.getElementById('countdownFinished');
+/* ============================================================
+   PENGANTIN
+============================================================ */
 
-const countdownDays = document.getElementById('countdownDays');
-const countdownHours = document.getElementById('countdownHours');
-const countdownMinutes = document.getElementById('countdownMinutes');
-const countdownSeconds = document.getElementById('countdownSeconds');
+const namaPengantin =
+  document.getElementById('namaPengantin');
 
-const openInvitation = document.getElementById('openInvitation');
+const namaPria =
+  document.getElementById('namaPria');
+
+const namaWanita =
+  document.getElementById('namaWanita');
+
+const quotePengantin =
+  document.getElementById('quotePengantin');
+
+
+/* ============================================================
+   HERO
+============================================================ */
+
+const tanggalAcara =
+  document.getElementById('tanggalAcara');
+
+const lokasiAcara =
+  document.getElementById('lokasiAcara');
+
+
+/* ============================================================
+   AKAD
+============================================================ */
+
+const akadTanggal =
+  document.getElementById('akadTanggal');
+
+const akadWaktu =
+  document.getElementById('akadWaktu');
+
+const akadLokasi =
+  document.getElementById('akadLokasi');
+
+const akadAlamat =
+  document.getElementById('akadAlamat');
+
+const akadMapsButton =
+  document.getElementById('akadMapsButton');
+
+
+/* ============================================================
+   RESEPSI
+============================================================ */
+
+const resepsiTanggal =
+  document.getElementById('resepsiTanggal');
+
+const resepsiWaktu =
+  document.getElementById('resepsiWaktu');
+
+const resepsiLokasi =
+  document.getElementById('resepsiLokasi');
+
+const resepsiAlamat =
+  document.getElementById('resepsiAlamat');
+
+const resepsiMapsButton =
+  document.getElementById('resepsiMapsButton');
+
+
+/* ============================================================
+   COUNTDOWN
+============================================================ */
+
+const countdownDate =
+  document.getElementById('countdownDate');
+
+const countdownTimer =
+  document.getElementById('countdownTimer');
+
+const countdownFinished =
+  document.getElementById('countdownFinished');
+
+const countdownDays =
+  document.getElementById('countdownDays');
+
+const countdownHours =
+  document.getElementById('countdownHours');
+
+const countdownMinutes =
+  document.getElementById('countdownMinutes');
+
+const countdownSeconds =
+  document.getElementById('countdownSeconds');
+
+
+/* ============================================================
+   BUTTON
+============================================================ */
+
+const openInvitation =
+  document.getElementById('openInvitation');
 
 
 /* ============================================================
@@ -56,6 +140,7 @@ const openInvitation = document.getElementById('openInvitation');
 ============================================================ */
 
 let invitationData = null;
+
 let countdownInterval = null;
 
 
@@ -63,9 +148,26 @@ let countdownInterval = null;
    START
 ============================================================ */
 
-document.addEventListener('DOMContentLoaded', function () {
-  loadInvitation();
-});
+document.addEventListener(
+  'DOMContentLoaded',
+  function () {
+
+    console.log(
+      '===================================='
+    );
+
+    console.log(
+      'UNDANGAN ONLINE - APP.JS V7'
+    );
+
+    console.log(
+      '===================================='
+    );
+
+    loadInvitation();
+
+  }
+);
 
 
 /* ============================================================
@@ -76,49 +178,79 @@ async function loadInvitation() {
 
   try {
 
-    const response = await fetch(
-      API_URL + '?action=config',
-      {
-        method: 'GET',
-        cache: 'no-cache'
-      }
+    console.log(
+      'Mengambil data dari Apps Script...'
     );
 
+    const response =
+      await fetch(
+        API_URL + '?action=config&v=' + Date.now(),
+        {
+          method: 'GET',
+          cache: 'no-store'
+        }
+      );
+
+
     if (!response.ok) {
+
       throw new Error(
         'Server Apps Script tidak dapat diakses.'
       );
+
     }
 
-    const result = await response.json();
 
-    console.log('RESPON API:', result);
+    const result =
+      await response.json();
 
-    if (!result || result.success !== true) {
+
+    console.log(
+      'RESPON API:',
+      result
+    );
+
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
       throw new Error(
         result && result.message
           ? result.message
           : 'Data undangan gagal dimuat.'
       );
+
     }
 
-    invitationData = result.data || {};
+
+    invitationData =
+      result.data || {};
+
 
     console.log(
       'DATA UNDANGAN:',
       invitationData
     );
 
-    renderInvitation(invitationData);
 
-  } catch (error) {
+    renderInvitation(
+      invitationData
+    );
+
+  }
+
+  catch (error) {
 
     console.error(
       'ERROR LOAD INVITATION:',
       error
     );
 
-    showError(error.message);
+    showError(
+      error.message
+    );
 
   }
 
@@ -126,125 +258,183 @@ async function loadInvitation() {
 
 
 /* ============================================================
-   RENDER
+   RENDER INVITATION
 ============================================================ */
 
 function renderInvitation(data) {
 
   console.log(
-    'DATA RENDER:',
-    data
+    '===================================='
+  );
+
+  console.log(
+    'RENDER INVITATION'
+  );
+
+  console.log(
+    '===================================='
   );
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      PENGANTIN
-  ---------------------------------------------------------- */
+  ========================================================== */
 
-  const pengantin = data.pengantin || {};
-
-  const pria = getFirstValue([
-    pengantin.nama_pria,
-    data.nama_pria,
-    data.config?.nama_pria
-  ]) || 'Nama Pria';
-
-  const wanita = getFirstValue([
-    pengantin.nama_wanita,
-    data.nama_wanita,
-    data.config?.nama_wanita
-  ]) || 'Nama Wanita';
-
-  const quote = getFirstValue([
-    pengantin.quote,
-    data.quote
-  ]) || '';
+  const pengantin =
+    data.pengantin || {};
 
 
-  /* ----------------------------------------------------------
+  const pria =
+    getFirstValue([
+      pengantin.nama_pria,
+      data.nama_pria,
+      data.config?.nama_pria
+    ]) ||
+    'Nama Pria';
+
+
+  const wanita =
+    getFirstValue([
+      pengantin.nama_wanita,
+      data.nama_wanita,
+      data.config?.nama_wanita
+    ]) ||
+    'Nama Wanita';
+
+
+  const quote =
+    getFirstValue([
+      pengantin.quote,
+      data.quote
+    ]) ||
+    '';
+
+
+  /* ==========================================================
      ACARA
-  ---------------------------------------------------------- */
+  ========================================================== */
 
-  const acara = data.acara || {};
+  const acara =
+    data.acara || {};
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      AKAD
-  ---------------------------------------------------------- */
+  ========================================================== */
 
-  const akadDate = getFirstValue([
-    acara.akad_tanggal,
-    acara.tanggal_akad,
-    data.akad_tanggal,
-    data.tanggal_akad,
-    data.config?.akad_tanggal
-  ]) || '-';
-
-  const akadTime = getFirstValue([
-    acara.akad_waktu,
-    acara.waktu_akad,
-    data.akad_waktu,
-    data.waktu_akad,
-    data.config?.akad_waktu
-  ]) || '-';
-
-  const akadPlace = getFirstValue([
-    acara.akad_lokasi,
-    acara.lokasi_akad,
-    data.akad_lokasi,
-    data.lokasi_akad
-  ]) || '-';
-
-  const akadAddress = getFirstValue([
-    acara.akad_alamat,
-    acara.alamat_akad,
-    data.akad_alamat,
-    data.alamat_akad
-  ]) || '-';
+  const akadDate =
+    getFirstValue([
+      acara.akad_tanggal,
+      acara.tanggal_akad,
+      data.akad_tanggal,
+      data.tanggal_akad,
+      data.config?.akad_tanggal
+    ]) ||
+    '-';
 
 
-  /* ----------------------------------------------------------
+  const akadTime =
+    getFirstValue([
+      acara.akad_waktu,
+      acara.waktu_akad,
+      data.akad_waktu,
+      data.waktu_akad,
+      data.config?.akad_waktu
+    ]) ||
+    '-';
+
+
+  const akadPlace =
+    getFirstValue([
+      acara.akad_lokasi,
+      acara.lokasi_akad,
+      data.akad_lokasi,
+      data.lokasi_akad
+    ]) ||
+    '-';
+
+
+  const akadAddress =
+    getFirstValue([
+      acara.akad_alamat,
+      acara.alamat_akad,
+      data.akad_alamat,
+      data.alamat_akad
+    ]) ||
+    '-';
+
+
+  /* ==========================================================
      RESEPSI
-  ---------------------------------------------------------- */
+  ========================================================== */
 
-  const resepsiDate = getFirstValue([
-    acara.resepsi_tanggal,
-    acara.tanggal_resepsi,
-    data.resepsi_tanggal
-  ]) || akadDate || '-';
-
-  const resepsiTime = getFirstValue([
-    acara.resepsi_waktu,
-    acara.waktu_resepsi,
-    data.resepsi_waktu
-  ]) || '-';
-
-  const resepsiPlace = getFirstValue([
-    acara.resepsi_lokasi,
-    acara.lokasi_resepsi,
-    data.resepsi_lokasi
-  ]) || '-';
-
-  const resepsiAddress = getFirstValue([
-    acara.resepsi_alamat,
-    acara.alamat_resepsi,
-    data.resepsi_alamat
-  ]) || '-';
+  const resepsiDate =
+    getFirstValue([
+      acara.resepsi_tanggal,
+      acara.tanggal_resepsi,
+      data.resepsi_tanggal,
+      data.tanggal_resepsi
+    ]) ||
+    akadDate ||
+    '-';
 
 
-  /* ----------------------------------------------------------
-     MAPS
-  ---------------------------------------------------------- */
+  const resepsiTime =
+    getFirstValue([
+      acara.resepsi_waktu,
+      acara.waktu_resepsi,
+      data.resepsi_waktu,
+      data.waktu_resepsi
+    ]) ||
+    '-';
 
-  const mapsUrl = getFirstValue([
-    acara.maps_url,
-    data.maps_url
-  ]) || '';
+
+  const resepsiPlace =
+    getFirstValue([
+      acara.resepsi_lokasi,
+      acara.lokasi_resepsi,
+      data.resepsi_lokasi,
+      data.lokasi_resepsi
+    ]) ||
+    '-';
 
 
-  /* ----------------------------------------------------------
-     DEBUG
-  ---------------------------------------------------------- */
+  const resepsiAddress =
+    getFirstValue([
+      acara.resepsi_alamat,
+      acara.alamat_resepsi,
+      data.resepsi_alamat,
+      data.alamat_resepsi
+    ]) ||
+    '-';
+
+
+  /* ==========================================================
+     GOOGLE MAPS
+  ========================================================== */
+
+  const mapsUrl =
+    getFirstValue([
+      acara.maps_url,
+      data.maps_url,
+      data.config?.maps_url
+    ]) ||
+    '';
+
+
+  /* ==========================================================
+     DEBUG DATA
+  ========================================================== */
+
+  console.log(
+    'NAMA PRIA:',
+    pria
+  );
+
+  console.log(
+    'NAMA WANITA:',
+    wanita
+  );
 
   console.log(
     'AKAD TANGGAL:',
@@ -261,105 +451,149 @@ function renderInvitation(data) {
     resepsiDate
   );
 
+  console.log(
+    'RESEPSI WAKTU:',
+    resepsiTime
+  );
 
-  /* ----------------------------------------------------------
+
+  /* ==========================================================
      HERO
-  ---------------------------------------------------------- */
+  ========================================================== */
 
   if (namaPengantin) {
+
     namaPengantin.textContent =
       pria + ' & ' + wanita;
+
   }
+
 
   if (tanggalAcara) {
+
     tanggalAcara.textContent =
       akadDate;
+
   }
+
 
   if (lokasiAcara) {
+
     lokasiAcara.textContent =
       akadAddress;
+
   }
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      PENGANTIN
-  ---------------------------------------------------------- */
+  ========================================================== */
 
   if (namaPria) {
+
     namaPria.textContent =
       pria;
+
   }
+
 
   if (namaWanita) {
+
     namaWanita.textContent =
       wanita;
+
   }
+
 
   if (quotePengantin) {
+
     quotePengantin.textContent =
       quote;
+
   }
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      AKAD
-  ---------------------------------------------------------- */
+  ========================================================== */
 
   if (akadTanggal) {
+
     akadTanggal.textContent =
       akadDate;
+
   }
+
 
   if (akadWaktu) {
+
     akadWaktu.textContent =
       akadTime;
+
   }
+
 
   if (akadLokasi) {
+
     akadLokasi.textContent =
       akadPlace;
+
   }
+
 
   if (akadAlamat) {
+
     akadAlamat.textContent =
       akadAddress;
+
   }
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      RESEPSI
-  ---------------------------------------------------------- */
+  ========================================================== */
 
   if (resepsiTanggal) {
+
     resepsiTanggal.textContent =
       resepsiDate;
+
   }
+
 
   if (resepsiWaktu) {
+
     resepsiWaktu.textContent =
       resepsiTime;
+
   }
+
 
   if (resepsiLokasi) {
+
     resepsiLokasi.textContent =
       resepsiPlace;
+
   }
+
 
   if (resepsiAlamat) {
+
     resepsiAlamat.textContent =
       resepsiAddress;
+
   }
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      MAPS
-  ---------------------------------------------------------- */
+  ========================================================== */
 
   setupMapsButton(
     akadMapsButton,
     mapsUrl
   );
+
 
   setupMapsButton(
     resepsiMapsButton,
@@ -367,9 +601,22 @@ function renderInvitation(data) {
   );
 
 
-  /* ----------------------------------------------------------
+  /* ==========================================================
      COUNTDOWN
-  ---------------------------------------------------------- */
+  ========================================================== */
+
+  console.log(
+    '===================================='
+  );
+
+  console.log(
+    'MEMULAI COUNTDOWN'
+  );
+
+  console.log(
+    '===================================='
+  );
+
 
   startCountdown(
     akadDate,
@@ -377,9 +624,9 @@ function renderInvitation(data) {
   );
 
 
-  /* ----------------------------------------------------------
-     SHOW APP
-  ---------------------------------------------------------- */
+  /* ==========================================================
+     TAMPILKAN APP
+  ========================================================== */
 
   hideLoading();
 
@@ -387,38 +634,54 @@ function renderInvitation(data) {
 
 
 /* ============================================================
-   GET VALUE
+   GET FIRST VALUE
 ============================================================ */
 
 function getFirstValue(values) {
 
-  for (let i = 0; i < values.length; i++) {
+  for (
+    let i = 0;
+    i < values.length;
+    i++
+  ) {
 
-    const value = values[i];
+    const value =
+      values[i];
+
 
     if (
       value !== undefined &&
       value !== null &&
       String(value).trim() !== ''
     ) {
+
       return value;
+
     }
 
   }
 
+
   return null;
+
 }
 
 
 /* ============================================================
-   MAPS BUTTON
+   GOOGLE MAPS BUTTON
 ============================================================ */
 
-function setupMapsButton(button, url) {
+function setupMapsButton(
+  button,
+  url
+) {
 
   if (!button) {
+
     return;
+
   }
+
 
   if (
     url &&
@@ -428,17 +691,22 @@ function setupMapsButton(button, url) {
     button.href =
       String(url).trim();
 
+
     button.target =
       '_blank';
 
+
     button.rel =
       'noopener noreferrer';
+
 
     button.classList.remove(
       'hidden'
     );
 
-  } else {
+  }
+
+  else {
 
     button.classList.add(
       'hidden'
@@ -450,7 +718,7 @@ function setupMapsButton(button, url) {
 
 
 /* ============================================================
-   COUNTDOWN
+   START COUNTDOWN
 ============================================================ */
 
 function startCountdown(
@@ -458,16 +726,44 @@ function startCountdown(
   timeString
 ) {
 
+  console.log(
+    '------------------------------------'
+  );
+
+  console.log(
+    'START COUNTDOWN'
+  );
+
+  console.log(
+    'Tanggal:',
+    dateString
+  );
+
+  console.log(
+    'Waktu:',
+    timeString
+  );
+
+
+  /* ==========================================================
+     CLEAR INTERVAL LAMA
+  ========================================================== */
+
   if (countdownInterval) {
 
     clearInterval(
       countdownInterval
     );
 
-    countdownInterval = null;
+    countdownInterval =
+      null;
 
   }
 
+
+  /* ==========================================================
+     TAMPILKAN TANGGAL COUNTDOWN
+  ========================================================== */
 
   if (countdownDate) {
 
@@ -477,15 +773,17 @@ function startCountdown(
     ) {
 
       countdownDate.textContent =
-        dateString +
+        String(dateString) +
         (
           timeString &&
           timeString !== '-'
-            ? ' • ' + timeString
+            ? ' • ' + String(timeString)
             : ''
         );
 
-    } else {
+    }
+
+    else {
 
       countdownDate.textContent =
         '-';
@@ -495,16 +793,9 @@ function startCountdown(
   }
 
 
-  console.log(
-    'COUNTDOWN DATE:',
-    dateString
-  );
-
-  console.log(
-    'COUNTDOWN TIME:',
-    timeString
-  );
-
+  /* ==========================================================
+     PARSE TARGET DATE
+  ========================================================== */
 
   const targetDate =
     parseIndonesianDate(
@@ -514,12 +805,17 @@ function startCountdown(
 
 
   console.log(
-    'TARGET DATE:',
+    'TARGET COUNTDOWN:',
     targetDate
   );
 
 
   if (!targetDate) {
+
+    console.error(
+      'Tanggal countdown tidak dapat dibaca.'
+    );
+
 
     showCountdownError();
 
@@ -528,10 +824,46 @@ function startCountdown(
   }
 
 
+  console.log(
+    'TARGET TIMESTAMP:',
+    targetDate.getTime()
+  );
+
+
+  /* ==========================================================
+     TAMPILKAN TIMER
+  ========================================================== */
+
+  if (countdownTimer) {
+
+    countdownTimer.classList.remove(
+      'hidden'
+    );
+
+  }
+
+
+  if (countdownFinished) {
+
+    countdownFinished.classList.add(
+      'hidden'
+    );
+
+  }
+
+
+  /* ==========================================================
+     UPDATE PERTAMA
+  ========================================================== */
+
   updateCountdown(
     targetDate
   );
 
+
+  /* ==========================================================
+     UPDATE SETIAP 1 DETIK
+  ========================================================== */
 
   countdownInterval =
     setInterval(
@@ -545,11 +877,16 @@ function startCountdown(
       1000
     );
 
+
+  console.log(
+    'COUNTDOWN INTERVAL AKTIF'
+  );
+
 }
 
 
 /* ============================================================
-   PARSE DATE INDONESIA
+   PARSE TANGGAL INDONESIA
 ============================================================ */
 
 function parseIndonesianDate(
@@ -558,8 +895,10 @@ function parseIndonesianDate(
 ) {
 
   if (
-    !dateString ||
-    dateString === '-'
+    dateString === undefined ||
+    dateString === null ||
+    String(dateString).trim() === '' ||
+    String(dateString).trim() === '-'
   ) {
 
     return null;
@@ -567,28 +906,22 @@ function parseIndonesianDate(
   }
 
 
-  /* ----------------------------------------------------------
-     ISO DATE
-  ---------------------------------------------------------- */
+  /* ==========================================================
+     JIKA SUDAH OBJECT DATE
+  ========================================================== */
 
   if (
-    typeof dateString === 'string' &&
-    /^\d{4}-\d{2}-\d{2}/.test(
-      dateString
-    )
+    dateString instanceof Date
   ) {
-
-    const isoDate =
-      new Date(dateString);
 
     if (
       !isNaN(
-        isoDate.getTime()
+        dateString.getTime()
       )
     ) {
 
       return applyTimeToDate(
-        isoDate,
+        new Date(dateString),
         timeString
       );
 
@@ -597,9 +930,75 @@ function parseIndonesianDate(
   }
 
 
-  /* ----------------------------------------------------------
-     BULAN INDONESIA
-  ---------------------------------------------------------- */
+  const original =
+    String(dateString).trim();
+
+
+  console.log(
+    'PARSE DATE:',
+    original
+  );
+
+
+  /* ==========================================================
+     FORMAT ISO
+     CONTOH:
+     2027-04-02
+     2027-04-02T00:00:00.000Z
+  ========================================================== */
+
+  if (
+    /^\d{4}-\d{2}-\d{2}/.test(
+      original
+    )
+  ) {
+
+    const isoMatch =
+      original.match(
+        /^(\d{4})-(\d{2})-(\d{2})/
+      );
+
+
+    if (isoMatch) {
+
+      const year =
+        parseInt(
+          isoMatch[1],
+          10
+        );
+
+      const month =
+        parseInt(
+          isoMatch[2],
+          10
+        ) - 1;
+
+      const day =
+        parseInt(
+          isoMatch[3],
+          10
+        );
+
+
+      return createWIBDate(
+        year,
+        month,
+        day,
+        timeString
+      );
+
+    }
+
+  }
+
+
+  /* ==========================================================
+     FORMAT TANGGAL INDONESIA
+     CONTOH:
+     2 April 2027
+     02 April 2027
+     2 April, 2027
+  ========================================================== */
 
   const months = {
 
@@ -620,67 +1019,135 @@ function parseIndonesianDate(
 
 
   const cleanDate =
-    String(dateString)
-      .trim()
+    original
       .toLowerCase()
-      .replace(/,/g, '');
+      .replace(/,/g, '')
+      .replace(/\./g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
 
 
   const parts =
-    cleanDate.split(/\s+/);
+    cleanDate.split(' ');
 
 
-  if (parts.length < 3) {
-    return null;
+  console.log(
+    'DATE PARTS:',
+    parts
+  );
+
+
+  if (parts.length >= 3) {
+
+    const day =
+      parseInt(
+        parts[0],
+        10
+      );
+
+
+    const month =
+      months[
+        parts[1]
+      ];
+
+
+    const year =
+      parseInt(
+        parts[2],
+        10
+      );
+
+
+    if (
+      !isNaN(day) &&
+      month !== undefined &&
+      !isNaN(year)
+    ) {
+
+      console.log(
+        'PARSED:',
+        day,
+        month,
+        year
+      );
+
+
+      return createWIBDate(
+        year,
+        month,
+        day,
+        timeString
+      );
+
+    }
+
   }
 
 
-  const day =
-    parseInt(
-      parts[0],
-      10
-    );
+  /* ==========================================================
+     FORMAT FALLBACK JAVASCRIPT
+  ========================================================== */
 
-  const month =
-    months[parts[1]];
-
-  const year =
-    parseInt(
-      parts[2],
-      10
-    );
+  const fallback =
+    new Date(original);
 
 
   if (
-    isNaN(day) ||
-    month === undefined ||
-    isNaN(year)
+    !isNaN(
+      fallback.getTime()
+    )
   ) {
 
-    return null;
+    return applyTimeToDate(
+      fallback,
+      timeString
+    );
 
   }
 
 
-  /* ----------------------------------------------------------
-     WAKTU
-  ---------------------------------------------------------- */
+  return null;
+
+}
+
+
+/* ============================================================
+   CREATE WIB DATE
+============================================================ */
+
+function createWIBDate(
+  year,
+  month,
+  day,
+  timeString
+) {
 
   let hours = 0;
+
   let minutes = 0;
+
   let seconds = 0;
 
 
+  /* ==========================================================
+     PARSE JAM
+  ========================================================== */
+
   if (
     timeString &&
-    timeString !== '-'
+    String(timeString).trim() !== '' &&
+    String(timeString).trim() !== '-'
   ) {
 
+    const timeText =
+      String(timeString).trim();
+
+
     const timeMatch =
-      String(timeString)
-        .match(
-          /(\d{1,2}):(\d{2})/
-        );
+      timeText.match(
+        /(\d{1,2}):(\d{2})(?::(\d{2}))?/
+      );
 
 
     if (timeMatch) {
@@ -691,20 +1158,59 @@ function parseIndonesianDate(
           10
         );
 
+
       minutes =
         parseInt(
           timeMatch[2],
           10
         );
 
+
+      seconds =
+        timeMatch[3]
+          ? parseInt(
+              timeMatch[3],
+              10
+            )
+          : 0;
+
     }
 
   }
 
 
-  /* ----------------------------------------------------------
-     WIB UTC+7
-  ---------------------------------------------------------- */
+  /* ==========================================================
+     VALIDASI
+  ========================================================== */
+
+  if (
+    hours < 0 ||
+    hours > 23 ||
+    minutes < 0 ||
+    minutes > 59 ||
+    seconds < 0 ||
+    seconds > 59
+  ) {
+
+    console.error(
+      'Jam tidak valid:',
+      hours,
+      minutes,
+      seconds
+    );
+
+
+    return null;
+
+  }
+
+
+  /* ==========================================================
+     WIB = UTC + 7
+     
+     Kita buat timestamp UTC dengan
+     mengurangi 7 jam dari waktu WIB.
+  ========================================================== */
 
   const utcTimestamp =
     Date.UTC(
@@ -717,9 +1223,24 @@ function parseIndonesianDate(
     );
 
 
-  return new Date(
-    utcTimestamp
-  );
+  const result =
+    new Date(
+      utcTimestamp
+    );
+
+
+  if (
+    isNaN(
+      result.getTime()
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  return result;
 
 }
 
@@ -734,8 +1255,21 @@ function applyTimeToDate(
 ) {
 
   if (
+    !date ||
+    isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return null;
+
+  }
+
+
+  if (
     !timeString ||
-    timeString === '-'
+    String(timeString).trim() === '' ||
+    String(timeString).trim() === '-'
   ) {
 
     return date;
@@ -746,12 +1280,14 @@ function applyTimeToDate(
   const timeMatch =
     String(timeString)
       .match(
-        /(\d{1,2}):(\d{2})/
+        /(\d{1,2}):(\d{2})(?::(\d{2}))?/
       );
 
 
   if (!timeMatch) {
+
     return date;
+
   }
 
 
@@ -761,11 +1297,21 @@ function applyTimeToDate(
       10
     );
 
+
   const minutes =
     parseInt(
       timeMatch[2],
       10
     );
+
+
+  const seconds =
+    timeMatch[3]
+      ? parseInt(
+          timeMatch[3],
+          10
+        )
+      : 0;
 
 
   const result =
@@ -775,7 +1321,7 @@ function applyTimeToDate(
   result.setUTCHours(
     hours - 7,
     minutes,
-    0,
+    seconds,
     0
   );
 
@@ -793,6 +1339,18 @@ function updateCountdown(
   targetDate
 ) {
 
+  if (
+    !targetDate ||
+    isNaN(
+      targetDate.getTime()
+    )
+  ) {
+
+    return;
+
+  }
+
+
   const now =
     new Date();
 
@@ -802,7 +1360,25 @@ function updateCountdown(
     now.getTime();
 
 
-  if (difference <= 0) {
+  /* ==========================================================
+     DEBUG
+  ========================================================== */
+
+  /*
+  console.log(
+    'COUNTDOWN DIFFERENCE:',
+    difference
+  );
+  */
+
+
+  /* ==========================================================
+     JIKA SUDAH TIBA
+  ========================================================== */
+
+  if (
+    difference <= 0
+  ) {
 
     finishCountdown();
 
@@ -810,6 +1386,10 @@ function updateCountdown(
 
   }
 
+
+  /* ==========================================================
+     HARI
+  ========================================================== */
 
   const days =
     Math.floor(
@@ -822,6 +1402,10 @@ function updateCountdown(
       )
     );
 
+
+  /* ==========================================================
+     JAM
+  ========================================================== */
 
   const hours =
     Math.floor(
@@ -842,6 +1426,10 @@ function updateCountdown(
     );
 
 
+  /* ==========================================================
+     MENIT
+  ========================================================== */
+
   const minutes =
     Math.floor(
       (
@@ -859,6 +1447,10 @@ function updateCountdown(
     );
 
 
+  /* ==========================================================
+     DETIK
+  ========================================================== */
+
   const seconds =
     Math.floor(
       (
@@ -872,26 +1464,37 @@ function updateCountdown(
     );
 
 
+  /* ==========================================================
+     UPDATE HTML
+  ========================================================== */
+
   setCountdownValue(
     countdownDays,
     days
   );
+
 
   setCountdownValue(
     countdownHours,
     hours
   );
 
+
   setCountdownValue(
     countdownMinutes,
     minutes
   );
+
 
   setCountdownValue(
     countdownSeconds,
     seconds
   );
 
+
+  /* ==========================================================
+     PASTIKAN TIMER TAMPIL
+  ========================================================== */
 
   if (countdownTimer) {
 
@@ -900,6 +1503,7 @@ function updateCountdown(
     );
 
   }
+
 
   if (countdownFinished) {
 
@@ -913,7 +1517,7 @@ function updateCountdown(
 
 
 /* ============================================================
-   FORMAT ANGKA
+   FORMAT ANGKA COUNTDOWN
 ============================================================ */
 
 function setCountdownValue(
@@ -922,15 +1526,26 @@ function setCountdownValue(
 ) {
 
   if (!element) {
+
+    console.warn(
+      'Element countdown tidak ditemukan.'
+    );
+
     return;
+
   }
 
+
   element.textContent =
-    String(value)
-      .padStart(
-        2,
-        '0'
-      );
+    String(
+      Math.max(
+        0,
+        value
+      )
+    ).padStart(
+      2,
+      '0'
+    );
 
 }
 
@@ -941,13 +1556,19 @@ function setCountdownValue(
 
 function finishCountdown() {
 
+  console.log(
+    'COUNTDOWN SELESAI'
+  );
+
+
   if (countdownInterval) {
 
     clearInterval(
       countdownInterval
     );
 
-    countdownInterval = null;
+    countdownInterval =
+      null;
 
   }
 
@@ -978,44 +1599,63 @@ function finishCountdown() {
 
 function showCountdownError() {
 
+  console.error(
+    'COUNTDOWN ERROR'
+  );
+
+
+  /*
+   * Jangan sembunyikan timer.
+   * Kita biarkan angka 00 tetap terlihat
+   * supaya bagian countdown tidak hilang.
+   */
+
   if (countdownTimer) {
 
-    countdownTimer.classList.add(
+    countdownTimer.classList.remove(
       'hidden'
     );
 
   }
+
 
   if (countdownFinished) {
 
-    countdownFinished.classList.remove(
+    countdownFinished.classList.add(
       'hidden'
     );
 
   }
 
 
-  const title =
-    countdownFinished
-      ?.querySelector('h3');
+  if (countdownDays) {
 
-  const text =
-    countdownFinished
-      ?.querySelector('p');
-
-
-  if (title) {
-
-    title.textContent =
-      'Tanggal Belum Diatur';
+    countdownDays.textContent =
+      '00';
 
   }
 
 
-  if (text) {
+  if (countdownHours) {
 
-    text.textContent =
-      'Silakan periksa tanggal acara pada Spreadsheet.';
+    countdownHours.textContent =
+      '00';
+
+  }
+
+
+  if (countdownMinutes) {
+
+    countdownMinutes.textContent =
+      '00';
+
+  }
+
+
+  if (countdownSeconds) {
+
+    countdownSeconds.textContent =
+      '00';
 
   }
 
@@ -1023,7 +1663,7 @@ function showCountdownError() {
 
 
 /* ============================================================
-   LOADING
+   HIDE LOADING
 ============================================================ */
 
 function hideLoading() {
@@ -1035,6 +1675,7 @@ function hideLoading() {
     );
 
   }
+
 
   if (app) {
 
@@ -1048,12 +1689,18 @@ function hideLoading() {
 
 
 /* ============================================================
-   ERROR
+   SHOW ERROR
 ============================================================ */
 
 function showError(
   message
 ) {
+
+  console.error(
+    'SHOW ERROR:',
+    message
+  );
+
 
   if (loadingScreen) {
 
@@ -1063,6 +1710,7 @@ function showError(
 
   }
 
+
   if (app) {
 
     app.classList.add(
@@ -1071,6 +1719,7 @@ function showError(
 
   }
 
+
   if (errorMessage) {
 
     errorMessage.textContent =
@@ -1078,6 +1727,7 @@ function showError(
       'Terjadi kesalahan.';
 
   }
+
 
   if (errorScreen) {
 
@@ -1130,8 +1780,11 @@ function getInvitationData() {
 function getPengantinData() {
 
   if (!invitationData) {
+
     return {};
+
   }
+
 
   return (
     invitationData.pengantin ||
@@ -1144,8 +1797,11 @@ function getPengantinData() {
 function getAcaraData() {
 
   if (!invitationData) {
+
     return {};
+
   }
+
 
   return (
     invitationData.acara ||
